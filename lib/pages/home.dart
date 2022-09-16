@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:journaling_app/pages/all_checklists.dart';
+import 'package:journaling_app/pages/settings.dart';
 import 'package:journaling_app/sharedPreferences.dart';
 import 'add_page.dart';
 import 'edit_page.dart';
@@ -24,7 +25,23 @@ class _HomePageState extends State<HomePage> {
   late Widget profileIcon;
   String emoticon = "129489";
   TextEditingController addChecklistController = TextEditingController();
+  late String? name = "";
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    setName();
+  }
   
+  setName() async {
+    String? userName = await sharedPreferences.getFromSharedPref("user-name");
+    print(userName);
+    setState(() {
+      name = userName;
+    });
+  }
+
   setNotes()async{
     String? allChecklists  = await sharedPreferences.getFromSharedPref('user-journals');
     if (allChecklists!=null) {
@@ -46,6 +63,20 @@ class _HomePageState extends State<HomePage> {
       }else{
         return reversedList;
       }
+    }
+  }
+
+  removeNote(int index)async{
+    String? allNotes = await sharedPreferences.getFromSharedPref('user-journals');
+    if (allNotes!=null) {
+      List notesDecoded = jsonDecode(allNotes);
+      List notesReversed = List.from(notesDecoded.reversed);
+      notesReversed.removeAt(index);
+      List finalList = List.from(notesReversed.reversed);
+      await sharedPreferences.saveToSharedPref('user-journals', jsonEncode(finalList));
+      setState(() {
+        
+      });
     }
   }
 
@@ -137,10 +168,38 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 219, 210, 127),
-      
       appBar: AppBar(
-        title: const Text("JournalIt", style: TextStyle(color: Color.fromARGB(255, 93, 22, 22), fontWeight: FontWeight.bold)),
-        backgroundColor: Colors.amber,
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+              borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(20), bottomRight: Radius.circular(20)),
+              color: Colors.amber),
+        ),
+        // title: const Text("JournalIt", style: TextStyle(color: Color.fromARGB(255, 93, 22, 22), fontWeight: FontWeight.bold)),
+        title:
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children:[
+        Row(
+          children: [
+          Image.asset('assets/images/logo-journalit-2.png', width: 55,height: 55,),
+          Text("Welcome, $name",
+          overflow: TextOverflow.ellipsis,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 17,
+            color: Color.fromARGB(255, 52, 63, 71)))]),
+        GestureDetector(child: const Icon(Icons.settings,size: 30,color:Color.fromARGB(131, 0, 0, 0),),
+        onTap:(){
+          Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => 
+                SettingsPage()),
+              );
+        },)]),
+        backgroundColor: Color.fromARGB(255, 219, 210, 127),
+        elevation: 0,
+        
       ),
       body:Container(
         
@@ -243,14 +302,9 @@ class _HomePageState extends State<HomePage> {
                                                   color: Colors.black,
                                                   fontWeight: FontWeight.bold),
                                           ),
-                                    )
-                                ],
-                              ),
-                              trailing: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(right: 15.0),
+                                    ),
+                                     Row(children: [Padding(
+                                    padding: const EdgeInsets.only(right: 8.0, left: 5),
                                     child: GestureDetector( 
                                       onTap: (){
                                         Navigator.push(
@@ -265,14 +319,62 @@ class _HomePageState extends State<HomePage> {
                                         );
                                       },
                                       child: const Icon(
-                                      Icons.arrow_forward_ios_outlined,
+                                      Icons.edit,
                                       color: Color.fromARGB(137, 105, 105, 105),
-                                      size: 20,
+                                      size: 22,
                                     )
+                                    
                                     ),
                                   ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(right: 5.0),
+                                    child: GestureDetector( 
+                                      onTap: (){
+                                        removeNote(index);
+                                        
+                                      },
+                                      child: const Icon(
+                                      Icons.delete,
+                                      color: Color.fromARGB(137, 105, 105, 105),
+                                      size: 22,
+                                    )
+                                    
+                                    ),
+                                  ),
+                                     ])
                                 ],
                               ),
+                              // trailing: 
+                                
+                              //   Column(
+                              //   mainAxisAlignment: MainAxisAlignment.center,
+                              //   children: [
+                              //     Padding(
+                              //       padding: const EdgeInsets.only(right: 15.0),
+                              //       child: GestureDetector( 
+                              //         onTap: (){
+                              //           Navigator.push(
+                              //             context,
+                              //             MaterialPageRoute(builder: (context) => 
+                              //             EditPage(
+                              //               title: snapshot.data[index]["title"],
+                              //               body: snapshot.data[index]["body"],
+                              //               tag: snapshot.data[index]["tags"],
+                              //               index: index,
+                              //             )),
+                              //           );
+                              //         },
+                              //         child: const Icon(
+                              //         Icons.edit,
+                              //         color: Color.fromARGB(137, 105, 105, 105),
+                              //         size: 22,
+                              //       )
+                                    
+                              //       ),
+                              //     ),
+                                  
+                              //   ],
+                              // ),
                             ),
                           )
                         );

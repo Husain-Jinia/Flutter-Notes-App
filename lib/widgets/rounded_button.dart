@@ -14,6 +14,7 @@ class RoundedButton extends StatefulWidget {
   final Color textColor;
   TextEditingController controller;
   TextEditingController confirmController;
+  TextEditingController nameController;
   bool isPinCreated;
   RoundedButton({
     Key? key,
@@ -21,6 +22,7 @@ class RoundedButton extends StatefulWidget {
     this.textColor = Colors.white,
     required this.controller,
     required this.confirmController,
+    required this.nameController,
     required this.isPinCreated
   }) : super(key: key);
 
@@ -32,7 +34,7 @@ class _RoundedButtonState extends State<RoundedButton> {
     SharedPreferencesService sharedPreferences = SharedPreferencesService();
 
 
-  handleSubmit(TextEditingController pin) async {
+  handleSubmit(TextEditingController pin, TextEditingController name) async {
      String? userPin  = await sharedPreferences.getFromSharedPref('user-pin');
      if (widget.isPinCreated == true) {
       if(widget.controller.text == userPin){
@@ -48,8 +50,9 @@ class _RoundedButtonState extends State<RoundedButton> {
       }
 
      } else {
-       if (widget.controller.text == widget.confirmController.text) {
+       if (widget.controller.text == widget.confirmController.text && name.text.isNotEmpty) {
          await sharedPreferences.saveToSharedPref("user-pin", widget.controller.text);
+         await sharedPreferences.saveToSharedPref("user-name", name.text);
           Navigator.pushReplacement<void, void>(
               context,
               MaterialPageRoute<void>(
@@ -77,7 +80,7 @@ class _RoundedButtonState extends State<RoundedButton> {
               padding: MaterialStateProperty.all(
                   const EdgeInsets.symmetric(vertical: 20, horizontal: 40))),
           onPressed: (){
-            handleSubmit(widget.controller);
+            handleSubmit(widget.controller, widget.nameController);
           },
           child: Text(
             widget.text,
