@@ -95,7 +95,9 @@ class _EditPageState extends State<EditPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color.fromARGB(255, 219, 210, 127),
       appBar: AppBar(
+        backgroundColor: Colors.amber,
         title: const Text("Add page"),
       ),
       

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:journaling_app/pages/authentication.dart';
 import 'package:journaling_app/pages/home.dart';
+import 'package:journaling_app/pages/navigation.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,7 +18,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const HomePage(),
+      home: AuthenticationPage(),
     );
   }
 }

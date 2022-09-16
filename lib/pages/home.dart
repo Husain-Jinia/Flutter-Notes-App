@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:journaling_app/pages/all_checklists.dart';
 import 'package:journaling_app/sharedPreferences.dart';
 import 'add_page.dart';
 import 'edit_page.dart';
@@ -48,6 +49,23 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+  
+  removeItem(int index) async {
+    String? allJournals  = await sharedPreferences.getFromSharedPref('all-checklist');
+    if(allJournals!=null){
+      List decodedList = jsonDecode(allJournals);
+      List reversedList = List.from(decodedList.reversed);
+      reversedList.removeAt(index);
+      List finalList = List.from(reversedList.reversed);
+      await sharedPreferences.saveToSharedPref('all-checklist', jsonEncode(finalList));
+      setState(() {
+        
+      });
+    }
+    
+    
+  }
+
   taskUpdation(int index) async{
     String? allJournals  = await sharedPreferences.getFromSharedPref('all-checklist');
     if(allJournals!=null){
@@ -68,12 +86,17 @@ class _HomePageState extends State<HomePage> {
         decodedJournals.add(addChecklistController.text);
         await sharedPreferences.saveToSharedPref('all-checklist', jsonEncode(decodedJournals));
         print(decodedJournals);
+        setState(() {
+          
+        });
       }else{
         List checklist = [];
         checklist.add(addChecklistController.text);
         await sharedPreferences.saveToSharedPref('all-checklist', jsonEncode(checklist));
         print(checklist);
-        
+        setState(() {
+          
+        });
       }
     }
   }
@@ -114,14 +137,16 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 219, 210, 127),
+      
       appBar: AppBar(
         title: const Text("JournalIt", style: TextStyle(color: Color.fromARGB(255, 93, 22, 22), fontWeight: FontWeight.bold)),
         backgroundColor: Colors.amber,
       ),
-      body:
-      Column(children: [
+      body:Container(
+        
+      child:ListView(children: [
       Container(
-      height: MediaQuery.of(context).size.height * 0.47,
+      height: MediaQuery.of(context).size.height * 0.45,
       child:SingleChildScrollView(
           child:Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -165,7 +190,7 @@ class _HomePageState extends State<HomePage> {
                 return Container(
                   margin: EdgeInsets.only(left:8, right: 8),
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
+                    borderRadius: BorderRadius.circular(15),
                     color: Color.fromARGB(255, 220, 215, 179)
                   ),
                   child:Column(
@@ -183,8 +208,8 @@ class _HomePageState extends State<HomePage> {
                         setProfileIcons(snapshot.data[index]);
                         print(snapshot.data[index]);
                         return Container(
-                          margin: const EdgeInsets.only(bottom: 15, left: 15, right: 15),
-                          height: 82,
+                          margin: const EdgeInsets.only(bottom: 15, left: 10, right: 10),
+                          height: 79,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
                               ),
@@ -218,17 +243,6 @@ class _HomePageState extends State<HomePage> {
                                                   color: Colors.black,
                                                   fontWeight: FontWeight.bold),
                                           ),
-                                      // const SizedBox(height: 5),
-                                      // Row(
-                                      //   children: [
-
-                                      //     Text(
-                                      //       snapshot.data[index]["tags"],
-                                      //       style: const TextStyle(
-                                      //       fontSize: 12, fontWeight: FontWeight.w500),
-                                      //     ),
-                                      //   ],
-                                      // ),
                                     )
                                 ],
                               ),
@@ -275,18 +289,25 @@ class _HomePageState extends State<HomePage> {
     Container(
         child:Column(children: [
         Container(
-          padding: const EdgeInsets.only(left:20,top: 10, bottom: 10, right: 20),
+          padding: const EdgeInsets.only(left:20,top: 10, bottom: 5, right: 20),
           child:Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-            const Text("Checklist",
+            const Text("Task List",
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Color.fromARGB(255, 52, 63, 71)),
               ),
               Row(
                 children: [
-                Text("Show All",
+                GestureDetector(child:Text("Show All",
               style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold,color: Color.fromARGB(255, 86, 127, 160)),
               ),
+              onTap: (){
+                Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => 
+                AllChecklist()),
+              );
+              },),
                 ],
               )
           ],)
@@ -305,7 +326,7 @@ class _HomePageState extends State<HomePage> {
                               Padding(
                                 padding: const EdgeInsets.symmetric(horizontal:18),
                                 child:Container(
-                                  margin: EdgeInsets.fromLTRB(15,25,15,15),
+                                  margin: EdgeInsets.fromLTRB(15,15,15,15),
                                   padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
                                   child: Column(
                                     crossAxisAlignment:CrossAxisAlignment.start,
@@ -383,7 +404,7 @@ class _HomePageState extends State<HomePage> {
                 return Center(child:Text('error'));
               } else if (!snapshot.hasData) {
                 return const Center(
-                    child: Text("No checklists created"));
+                    child: Text("No tasks created"));
               } else {
                 return Container(
                    margin: EdgeInsets.only(left:10, right: 10),
@@ -399,7 +420,7 @@ class _HomePageState extends State<HomePage> {
                   children: [
                      
                       ListView.builder(
-                      padding: EdgeInsets.only(top: 5, bottom: 5),
+                      padding: EdgeInsets.only(top: 5),
                       shrinkWrap: true,
                       itemCount: snapshot.data.length,
 
@@ -407,26 +428,61 @@ class _HomePageState extends State<HomePage> {
                         // return Column(
                         //   children:[]
                         // );
-                        bool currentTaskCompleted = false; 
                         return Container(
-                          
+                          margin: const EdgeInsets.only( left: 10, right: 10, bottom: 8),
+                          height: 43,
                           decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(8),
-                                  color: Colors.grey[100],
-                                ),
-                          padding: EdgeInsets.fromLTRB(12, 8, 12, 8),
-                          margin: EdgeInsets.fromLTRB(6, 6, 6, 6),
-                              //   Container(
-                              //   child:Checkbox(
-                              // value: currentTaskCompleted, 
-                              // onChanged: taskUpdation(index)),
-                              //   ),
-                              child:Container(
-                                
-                                padding: EdgeInsets.only(left: 5),
-                                child:Text(snapshot.data[index],style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold),)
+                            borderRadius: BorderRadius.circular(15),
+                              ),
+                          child: Card(
+                            elevation: 1,
+                            margin: EdgeInsets.zero,
+                            color:  Colors.grey[100],
+                            child: ListTile(
+                              contentPadding: const EdgeInsets.only(left: 0, right: 4,bottom: 10),
+                              title: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  const SizedBox(width: 10),
+                                    Expanded(
+                                          child:Text(snapshot.data[index],
+                                              maxLines:1,
+                                              style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold,color: Color.fromARGB(255, 43, 55, 69),
+                                          )),
+                                      // const SizedBox(height: 5),
+                                      // Row(
+                                      //   children: [
 
-                            )
+                                      //     Text(
+                                      //       snapshot.data[index]["tags"],
+                                      //       style: const TextStyle(
+                                      //       fontSize: 12, fontWeight: FontWeight.w500),
+                                      //     ),
+                                      //   ],
+                                      // ),
+                                    )
+                                ],
+                              ),
+                              trailing: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(right: 15.0),
+                                    child: GestureDetector( 
+                                      onTap: ()  {
+                                       removeItem(index);
+                                      },
+                                      child: const Icon(
+                                      Icons.delete,
+                                      color: Color.fromARGB(137, 105, 105, 105),
+                                      size: 20,
+                                    )
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          )
                         );
                       }
                       )
@@ -434,8 +490,9 @@ class _HomePageState extends State<HomePage> {
                 )
                 );
               }})
-    ]))]),                          
+    ]))])),                          
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Color.fromARGB(255, 191, 153, 14),
         onPressed: (){
           Navigator.push(
             context,
