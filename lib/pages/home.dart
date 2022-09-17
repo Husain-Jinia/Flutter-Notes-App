@@ -183,6 +183,7 @@ class _HomePageState extends State<HomePage> {
         Row(
           children: [
           Image.asset('assets/images/logo-journalit-2.png', width: 55,height: 55,),
+          SizedBox(width: 10,),
           Text("Welcome, $name",
           overflow: TextOverflow.ellipsis,
           style: TextStyle(

@@ -22,12 +22,24 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
   TextEditingController _nameController = TextEditingController();
 
   bool isPinCreated =false;
+  String userName="";
 
     @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    getName();
     checkPinCreated();
+    
+  }
+
+  getName() async{
+    String? name = await sharedPreferences.getFromSharedPref('user-name');
+    if(name!=null){
+      setState(() {
+        userName = name;
+      });
+    }
   }
 
   checkPinCreated() async{
@@ -132,12 +144,10 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
               Center(child:Image.asset('assets/images/logo-journalit-2.png', width: 200,height: 200,)),
-              // Center(child:Text("JOURNALIT", style: TextStyle(fontSize: 23,fontWeight: FontWeight.bold,color: Color.fromARGB(145, 0, 0, 0)),)),
-              SizedBox(height:30),
-              PinTitle(
-                marginTop: 30,
-                title: 'Enter Pin',
-              ),
+              Center(child:Text("JOURNALIT", style: TextStyle(fontSize: 23,fontWeight: FontWeight.bold,color: Color.fromARGB(145, 0, 0, 0)),)),
+              SizedBox(height:50),
+              Center(child:Text("Logging in for $userName",style: TextStyle(fontSize: 15,color: Colors.black))),
+              SizedBox(height:20),
               ChangePinFormFields(
                 controller: _pinController,
                 

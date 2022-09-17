@@ -71,7 +71,7 @@ class _AllChecklistState extends State<AllChecklist> {
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 219, 210, 127),
       appBar: AppBar(
-        title: const Text("JournalIt", style: TextStyle(color: Color.fromARGB(255, 93, 22, 22), fontWeight: FontWeight.bold)),
+        title: const Text("All Task Lists", style: TextStyle(color: Color.fromARGB(255, 93, 22, 22), fontWeight: FontWeight.bold)),
         backgroundColor: Colors.amber,
       ),
       body: 

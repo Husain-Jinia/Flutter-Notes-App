@@ -16,6 +16,7 @@ class FolderPage extends StatefulWidget {
 
 class _FolderPageState extends State<FolderPage> {
   SharedPreferencesService sharedPreferences = SharedPreferencesService();
+  TextEditingController addCategoryController = TextEditingController();
   List categories = ["General", "Travel", "Study", "Todo", "Diary", "Notes"];
   int length =0;
   @override
@@ -38,6 +39,86 @@ class _FolderPageState extends State<FolderPage> {
     }
   }
 
+  submitCategory()async{
+    String? allCategories = await sharedPreferences.getFromSharedPref('all-categories');
+    if (allCategories == null) {
+      await sharedPreferences.saveToSharedPref('all-categories', jsonEncode(categories));
+      setState(() {
+      });
+    }
+    else if(addCategoryController.text == null){
+      print("error");
+    }else{
+      categories.add(addCategoryController.text);
+      await sharedPreferences.saveToSharedPref('all-categories', jsonEncode(categories));
+      setState(() {
+        
+      });
+    }
+  }
+
+  addCategoryWidget(){
+    return showModalBottomSheet(
+      shape:RoundedRectangleBorder(
+        borderRadius:BorderRadius.vertical(top: Radius.circular(25.0))),
+        context: context,
+        isScrollControlled:true,
+        builder: (context) =>
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal:18),
+          child:Container(
+            margin: EdgeInsets.fromLTRB(15,15,15,15),
+            padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+            child: Column(
+              crossAxisAlignment:CrossAxisAlignment.start,
+              mainAxisSize:MainAxisSize.min,
+              children: <Widget>[
+                Container(
+                  child:TextFormField(
+                    controller: addCategoryController,
+                    decoration:InputDecoration(
+                      labelText:'Enter your task',
+                      focusedBorder:OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                        borderSide: const BorderSide(
+                          color: Color.fromARGB(255, 115, 115, 115),
+                        ),
+                      ),
+                      enabledBorder:OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                        borderSide: const BorderSide(
+                          color: Color.fromARGB(255, 115, 115, 115),
+                        ),
+                      ),
+                    ),
+                    autofocus:true,
+                  ),
+                ),
+                Container(
+                child: Center(
+                  child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 10),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20))),
+                  child: const Text(
+                    'Submit',
+                    style: TextStyle(fontSize: 17),
+                  ),
+                  onPressed: () {
+                    submitCategory();
+                    Navigator.pop(context);
+                  },
+                ),
+                )
+              )
+            ],
+          ),
+        )
+      )
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
    return Scaffold(
@@ -53,6 +134,7 @@ class _FolderPageState extends State<FolderPage> {
                   
                   children: List.generate(categories.length, (index){
                   return Container(
+                    width: 119,
                     padding: EdgeInsets.all(5),
                     child:GestureDetector(
 
@@ -62,7 +144,7 @@ class _FolderPageState extends State<FolderPage> {
                             children: [
                         
                           Icon(Icons.folder, size: 110,color: Color.fromARGB(255, 64, 86, 104),),
-                          Text(categories[index],style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600, color: Colors.grey[800]),)
+                          Text(categories[index],maxLines: 3,style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600, color: Colors.grey[800]),)
                           ],),
 
                     onTap: (){
@@ -76,6 +158,18 @@ class _FolderPageState extends State<FolderPage> {
               }
             )
           )
-   ));
+   ),
+   floatingActionButton: FloatingActionButton(
+        backgroundColor: Color.fromARGB(255, 191, 153, 14),
+        onPressed: (){
+            addCategoryWidget();
+            setState(() {
+    // Call setState to refresh the page.
+          });
+        },
+        tooltip: 'Add',
+        child: const Icon(Icons.add),
+      ),
+   );
   }
 }

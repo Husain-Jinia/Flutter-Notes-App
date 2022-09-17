@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:journaling_app/pages/change_pin.dart';
+import 'package:journaling_app/pages/name_update.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({Key? key}) : super(key: key);
@@ -49,7 +50,11 @@ class _SettingsPageState extends State<SettingsPage> {
               Icon(Icons.arrow_forward_ios_outlined),
             ),
           ),onTap: (){
-            
+            Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => 
+                ChangeName()),
+              );
           },)
       ],)
     ));
