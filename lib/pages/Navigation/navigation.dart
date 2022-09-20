@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:journaling_app/pages/folder.dart';
-import 'package:journaling_app/pages/settings.dart';
+import 'package:journaling_app/pages/Journals/folder.dart';
+import 'package:journaling_app/pages/Settings/settings.dart';
 
-import 'all_checklists.dart';
-import 'home.dart';
+import '../Journals/all_checklists.dart';
+import '../Journals/home.dart';
 
 
 class Navigation extends StatefulWidget {

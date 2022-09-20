@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import '../sharedPreferences.dart';
-import '../widgets/pin_style.dart';
-import '../widgets/pin_title.dart';
-import '../widgets/rounded_button.dart';
+import '../../sharedPreferences.dart';
+import '../../widgets/PinUpdate/pin_style.dart';
+import '../../widgets/PinUpdate/pin_title.dart';
+import '../../widgets/rounded_button.dart';
 
 
 class AuthenticationPage extends StatefulWidget {

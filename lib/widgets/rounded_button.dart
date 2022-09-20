@@ -1,7 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
-import 'package:journaling_app/pages/home.dart';
-import '../pages/navigation.dart';
+import 'package:journaling_app/pages/Journals/home.dart';
+import '../pages/Navigation/navigation.dart';
 import '../sharedPreferences.dart';
 
 class RoundedButton extends StatefulWidget {

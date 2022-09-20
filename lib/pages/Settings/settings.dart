@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:journaling_app/pages/change_pin.dart';
-import 'package:journaling_app/pages/name_update.dart';
+import 'package:journaling_app/pages/Settings/change_pin.dart';
+import 'package:journaling_app/pages/Settings/name_update.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({Key? key}) : super(key: key);

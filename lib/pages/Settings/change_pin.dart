@@ -3,8 +3,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:journaling_app/sharedPreferences.dart';
 
-import '../widgets/pin_style.dart';
-import '../widgets/pin_title.dart';
+import '../../widgets/PinUpdate/pin_style.dart';
+import '../../widgets/PinUpdate/pin_title.dart';
 
 class ChangePinPage extends StatefulWidget {
   const ChangePinPage({Key? key}) : super(key: key);

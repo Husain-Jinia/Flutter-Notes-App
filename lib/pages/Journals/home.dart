@@ -2,8 +2,8 @@ import 'dart:convert';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:journaling_app/pages/all_checklists.dart';
-import 'package:journaling_app/pages/settings.dart';
+import 'package:journaling_app/pages/Journals/all_checklists.dart';
+import 'package:journaling_app/pages/Settings/settings.dart';
 import 'package:journaling_app/sharedPreferences.dart';
 import 'add_page.dart';
 import 'edit_page.dart';

@@ -1,9 +1,9 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:journaling_app/pages/edit_page.dart';
+import 'package:journaling_app/pages/Journals/edit_page.dart';
 
-import '../sharedPreferences.dart';
+import '../../sharedPreferences.dart';
 
 
 class AllJournals extends StatefulWidget {

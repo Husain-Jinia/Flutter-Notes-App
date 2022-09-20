@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../sharedPreferences.dart';
+import '../../sharedPreferences.dart';
 
 class ChangeName extends StatefulWidget {
   const ChangeName({Key? key}) : super(key: key);

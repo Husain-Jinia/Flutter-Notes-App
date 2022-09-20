@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:journaling_app/pages/authentication.dart';
-import 'package:journaling_app/pages/home.dart';
-import 'package:journaling_app/pages/navigation.dart';
+import 'package:journaling_app/pages/Authentication/authentication.dart';
+import 'package:journaling_app/pages/Journals/home.dart';
+import 'package:journaling_app/pages/Navigation/navigation.dart';
 
 void main() {
   runApp(const MyApp());

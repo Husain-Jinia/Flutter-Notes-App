@@ -1,9 +1,9 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:journaling_app/pages/all_journals.dart';
+import 'package:journaling_app/pages/Journals/all_journals.dart';
 
-import '../sharedPreferences.dart';
+import '../../sharedPreferences.dart';
 
 class FolderPage extends StatefulWidget {
   const FolderPage({Key? key}) : super(key: key);
