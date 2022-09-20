@@ -5,7 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:journaling_app/pages/Journals/all_checklists.dart';
 import 'package:journaling_app/pages/Settings/settings.dart';
 import 'package:journaling_app/sharedPreferences.dart';
-import 'add_page.dart';
+import '../../utils/numeric_check.dart';
+import 'add_notes.dart';
 import 'edit_page.dart';
 
 
@@ -125,17 +126,6 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  bool isNumeric(String s) {
-    if (s == null) {
-      return false;
-    }
-    try {
-      double.parse(s);
-      return true;
-    } catch (e) {
-      return false;
-    }
-  }
 
   void setProfileIcons(emoji) async {
     emoticon =
@@ -387,90 +377,88 @@ class _HomePageState extends State<HomePage> {
           ],)
         ),
         Container(
-                                  margin: EdgeInsets.fromLTRB(10,0,10,0),
-
-                        child: GestureDetector(
-                          onTap: () {
-                            showModalBottomSheet(
-                            shape:RoundedRectangleBorder(
-                              borderRadius:BorderRadius.vertical(top: Radius.circular(25.0))),
-                              context: context,
-                              isScrollControlled:true,
-                              builder: (context) =>
-                              Padding(
-                                padding: const EdgeInsets.symmetric(horizontal:18),
-                                child:Container(
-                                  margin: EdgeInsets.fromLTRB(15,15,15,15),
-                                  padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-                                  child: Column(
-                                    crossAxisAlignment:CrossAxisAlignment.start,
-                                    mainAxisSize:MainAxisSize.min,
-                                    children: <Widget>[
-                                      Container(
-                                        child:TextFormField(
-                                          controller: addChecklistController,
-                                          decoration:InputDecoration(
-                                            labelText:'Enter your task',
-                                            focusedBorder:OutlineInputBorder(
-                                              borderRadius: BorderRadius.circular(10.0),
-                                              borderSide: const BorderSide(
-                                                color: Color.fromARGB(255, 115, 115, 115),
-                                              ),
-                                            ),
-                                            enabledBorder:OutlineInputBorder(
-                                              borderRadius: BorderRadius.circular(10.0),
-                                              borderSide: const BorderSide(
-                                                color: Color.fromARGB(255, 115, 115, 115),
-                                              ),
-                                            ),
-                                          ),
-                                          autofocus:true,
-                                        ),
-                                      ),
-                                      Container(
-                                      child: Center(
-                                        child: ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                            padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 10),
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.circular(20))),
-                                        child: const Text(
-                                          'Submit',
-                                          style: TextStyle(fontSize: 17),
-                                        ),
-                                        onPressed: () {
-                                          submitCheckLists();
-                                          Navigator.pop(context);
-                                        },
-                                      ),
-                                      )
-                                    )
-                                  ],
+          margin: EdgeInsets.fromLTRB(10,0,10,0),
+          child: GestureDetector(
+            onTap: () {
+              showModalBottomSheet(
+              shape:RoundedRectangleBorder(
+                borderRadius:BorderRadius.vertical(top: Radius.circular(25.0))),
+                context: context,
+                isScrollControlled:true,
+                builder: (context) =>
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal:18),
+                  child:Container(
+                    margin: EdgeInsets.fromLTRB(15,15,15,15),
+                    padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+                    child: Column(
+                      crossAxisAlignment:CrossAxisAlignment.start,
+                      mainAxisSize:MainAxisSize.min,
+                      children: <Widget>[
+                        Container(
+                          child:TextFormField(
+                            controller: addChecklistController,
+                            decoration:InputDecoration(
+                              labelText:'Enter your task',
+                              focusedBorder:OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                                borderSide: const BorderSide(
+                                  color: Color.fromARGB(255, 115, 115, 115),
                                 ),
-                              )
-                            )
-                          );
-                          },
-                          child: Container(
-                            
-                            decoration: BoxDecoration(
-                              color: Colors.grey[100],
-                              borderRadius:  BorderRadius.circular(10)                        
                               ),
-                            margin: EdgeInsets.fromLTRB(5,8,5,10),
-                            padding: EdgeInsets.all(7),
-                            
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text("Add Task", 
-                                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Color.fromARGB(255, 52, 63, 71))),
-                                Icon(Icons.add),
-                              ],
+                              enabledBorder:OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                                borderSide: const BorderSide(
+                                  color: Color.fromARGB(255, 115, 115, 115),
+                                ),
+                              ),
                             ),
+                            autofocus:true,
                           ),
                         ),
-                      ),
+                        Container(
+                        child: Center(
+                          child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 10),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20))),
+                          child: const Text(
+                            'Submit',
+                            style: TextStyle(fontSize: 17),
+                          ),
+                          onPressed: () {
+                            submitCheckLists();
+                            Navigator.pop(context);
+                          },
+                        ),
+                        )
+                      )
+                    ],
+                  ),
+                )
+              )
+            );
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.grey[100],
+                borderRadius:  BorderRadius.circular(10)                        
+                ),
+              margin: EdgeInsets.fromLTRB(5,8,5,10),
+              padding: EdgeInsets.all(7),
+              
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text("Add Task", 
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Color.fromARGB(255, 52, 63, 71))),
+                  Icon(Icons.add),
+                ],
+              ),
+            ),
+          ),
+        ),
         FutureBuilder(
             future: setChecklists(),
             builder:(context, AsyncSnapshot snapshot) {
@@ -481,27 +469,21 @@ class _HomePageState extends State<HomePage> {
                     child: Text("No tasks created"));
               } else {
                 return Container(
-                   margin: EdgeInsets.only(left:10, right: 10),
-                   
+                  margin: const EdgeInsets.only(left:10, right: 10),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
-                    color: Color.fromARGB(255, 220, 215, 179)
+                    color: const Color.fromARGB(255, 220, 215, 179)
                   ),
                   child:
                   Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                     
                       ListView.builder(
-                      padding: EdgeInsets.only(top: 5),
+                      padding: const EdgeInsets.only(top: 5),
                       shrinkWrap: true,
                       itemCount: snapshot.data.length,
-
                       itemBuilder: (context, index) {
-                        // return Column(
-                        //   children:[]
-                        // );
                         return Container(
                           margin: const EdgeInsets.only( left: 10, right: 10, bottom: 8),
                           height: 43,
@@ -519,22 +501,12 @@ class _HomePageState extends State<HomePage> {
                                 children: [
                                   const SizedBox(width: 10),
                                     Expanded(
-                                          child:Text(snapshot.data[index],
-                                              maxLines:1,
-                                              style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold,color: Color.fromARGB(255, 43, 55, 69),
-                                          )),
-                                      // const SizedBox(height: 5),
-                                      // Row(
-                                      //   children: [
-
-                                      //     Text(
-                                      //       snapshot.data[index]["tags"],
-                                      //       style: const TextStyle(
-                                      //       fontSize: 12, fontWeight: FontWeight.w500),
-                                      //     ),
-                                      //   ],
-                                      // ),
-                                    )
+                                      child:Text(snapshot.data[index],
+                                        maxLines:1,
+                                        style: const TextStyle(fontSize: 16,fontWeight: FontWeight.bold,color: Color.fromARGB(255, 43, 55, 69),
+                                      )
+                                    ),
+                                  )
                                 ],
                               ),
                               trailing: Column(
@@ -559,25 +531,26 @@ class _HomePageState extends State<HomePage> {
                           )
                         );
                       }
-                      )
+                    )
                   ]
                 )
                 );
               }})
-    ]))])),                          
+            ]
+          )
+        )
+      ]
+      )),                          
       floatingActionButton: FloatingActionButton.extended(
-        
-        backgroundColor: Color.fromARGB(255, 191, 153, 14),
+        backgroundColor: Colors.amber,
         onPressed: (){
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => const AddPage()),
           );
-            setState(() {
-    // Call setState to refresh the page.
-          });
+          setState(() {});
         },
-          label:Row(children: [Text("Create Note")],)
+          label:Row(children: const [Text("Create Note",style: TextStyle(color: Color.fromARGB(255, 255, 255, 255)),)],)
       ),
     );
   }
