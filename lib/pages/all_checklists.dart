@@ -19,18 +19,18 @@ class _AllChecklistState extends State<AllChecklist> {
    TextEditingController addChecklistController = TextEditingController();
 
     setChecklists()async{
-    String? allJournals  = await sharedPreferences.getFromSharedPref('all-checklist');
-    if (allJournals!=null) {
-      List<dynamic> notesDecoded = jsonDecode(allJournals);
-      List reversedList = List.from(notesDecoded.reversed);
+    String? allChecklist  = await sharedPreferences.getFromSharedPref('all-checklist');
+    if (allChecklist!=null) {
+      List<dynamic> checklistDecoded = jsonDecode(allChecklist);
+      List reversedList = List.from(checklistDecoded.reversed);
       return reversedList;
     }
   }
 
   removeItem(int index) async {
-    String? allJournals  = await sharedPreferences.getFromSharedPref('all-checklist');
-    if(allJournals!=null){
-      List decodedList = jsonDecode(allJournals);
+    String? allChecklists  = await sharedPreferences.getFromSharedPref('all-checklist');
+    if(allChecklists!=null){
+      List decodedList = jsonDecode(allChecklists);
       List reversedList = List.from(decodedList.reversed);
       reversedList.removeAt(index);
       List finalList = List.from(reversedList.reversed);
@@ -43,14 +43,12 @@ class _AllChecklistState extends State<AllChecklist> {
 
     submitCheckLists()async{
     if(addChecklistController.text.isEmpty){
-      print("bruh");
     }else{
       String? allJournals  = await sharedPreferences.getFromSharedPref('all-checklist');
       if (allJournals!=null) {
         List decodedJournals = jsonDecode(allJournals);
         decodedJournals.add(addChecklistController.text);
         await sharedPreferences.saveToSharedPref('all-checklist', jsonEncode(decodedJournals));
-        print(decodedJournals);
         setState(() {
           
         });
@@ -58,7 +56,6 @@ class _AllChecklistState extends State<AllChecklist> {
         List checklist = [];
         checklist.add(addChecklistController.text);
         await sharedPreferences.saveToSharedPref('all-checklist', jsonEncode(checklist));
-        print(checklist);
         setState(() {
           
         });
@@ -76,13 +73,13 @@ class _AllChecklistState extends State<AllChecklist> {
       ),
       body: 
       Container(
-        padding: EdgeInsets.only(top: 15, bottom: 10),
-        child:SingleChildScrollView(child:Container(child:Column(
+        padding: const EdgeInsets.only(top: 15, bottom: 10),
+        child:SingleChildScrollView(child:Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
         children:[
           Container(
-            padding: EdgeInsets.all(15),
+            padding: const EdgeInsets.all(15),
             child: Text("All checklists",style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold,color: Color.fromARGB(255, 43, 60, 80))),
           ),
            Container(
@@ -126,8 +123,7 @@ class _AllChecklistState extends State<AllChecklist> {
                                           autofocus:true,
                                         ),
                                       ),
-                                      Container(
-                                      child: Center(
+                                      Center(
                                         child: ElevatedButton(
                                         style: ElevatedButton.styleFrom(
                                             padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 10),
@@ -143,7 +139,6 @@ class _AllChecklistState extends State<AllChecklist> {
                                         },
                                       ),
                                       )
-                                    )
                                   ],
                                 ),
                               )
@@ -161,7 +156,7 @@ class _AllChecklistState extends State<AllChecklist> {
                             
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
+                              children: const [
                                 Text("Add Task", 
                                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Color.fromARGB(255, 52, 63, 71))),
                                 Icon(Icons.add),
@@ -174,10 +169,10 @@ class _AllChecklistState extends State<AllChecklist> {
             future: setChecklists(),
             builder:(context, AsyncSnapshot snapshot) {
               if (snapshot.hasError) {
-                return Center(child:Text('No notes to display'));
+                return const Center(child:Text('No tasks to display'));
               } else if (!snapshot.hasData) {
                 return const Center(
-                    child: Text("No notes to display"));
+                    child: Text("No tasks to display"));
               } else {
                 return 
                   Column(
@@ -185,12 +180,10 @@ class _AllChecklistState extends State<AllChecklist> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                       snapshot.data==null?
-                        Container(
-                          child:Center(child:Text("No journals to display"))
-                        ):
+                        const Center(child:Text("No tasks to display")):
                       ListView.builder(
-                      padding: EdgeInsets.only(top: 10),
-                      physics: NeverScrollableScrollPhysics(),
+                      padding: const EdgeInsets.only(top: 10),
+                      physics: const NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
                       itemCount: snapshot.data.length,
                       
@@ -214,21 +207,10 @@ class _AllChecklistState extends State<AllChecklist> {
                                 children: [
                                   const SizedBox(width: 10),
                                     Expanded(
-                                          child:Text(snapshot.data[index],
-                                              maxLines:1,
-                                              style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold,color: Color.fromARGB(255, 43, 55, 69),
-                                          )),
-                                      // const SizedBox(height: 5),
-                                      // Row(
-                                      //   children: [
-
-                                      //     Text(
-                                      //       snapshot.data[index]["tags"],
-                                      //       style: const TextStyle(
-                                      //       fontSize: 12, fontWeight: FontWeight.w500),
-                                      //     ),
-                                      //   ],
-                                      // ),
+                                      child:Text(snapshot.data[index],
+                                          maxLines:1,
+                                          style: const TextStyle(fontSize: 16,fontWeight: FontWeight.bold,color: Color.fromARGB(255, 43, 55, 69),
+                                      )),
                                     )
                                 ],
                               ),
@@ -261,7 +243,7 @@ class _AllChecklistState extends State<AllChecklist> {
           }
         )
         ]
-        )))
+        ))
       )
     );
   }

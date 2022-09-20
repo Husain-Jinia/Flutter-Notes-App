@@ -30,7 +30,7 @@ class _ChangeNameState extends State<ChangeName> {
   }
 
   handleSubmit() async{
-    await sharedPreferences.saveToSharedPref('usr-name', _nameController.text);
+    await sharedPreferences.saveToSharedPref('user-name', _nameController.text);
   }
   
   @override
@@ -43,33 +43,31 @@ class _ChangeNameState extends State<ChangeName> {
       ),
       body:Container(
         child:Column(
-
           children:[
             Container(
-              margin: EdgeInsets.fromLTRB(20,100,20,0),
-            
-            child:TextFormField(
-            controller: _nameController,
-            decoration: InputDecoration(
-              labelText: "Name",
-              hintText: "Enter your name",
-              
-              focusColor: Colors.black,
-              fillColor: Color.fromRGBO(222, 231, 240, .57),
-              enabledBorder: OutlineInputBorder(
-                borderSide: const BorderSide(color: Color.fromARGB(255, 0, 0, 0)),
-                borderRadius: BorderRadius.circular(10.0),
+              margin: EdgeInsets.fromLTRB(20,100,20,0),         
+              child:TextFormField(
+              controller: _nameController,
+              decoration: InputDecoration(
+                labelText: "Name",
+                hintText: "Enter your name",
+                focusColor: Colors.black,
+                fillColor: Color.fromRGBO(222, 231, 240, .57),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: const BorderSide(color: Color.fromARGB(255, 0, 0, 0)),
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                border: OutlineInputBorder(
+                  borderSide: const BorderSide(color: Color.fromARGB(255, 0, 0, 0)),
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: const BorderSide(color: Color.fromARGB(255, 0, 0, 0)),
+                  borderRadius: BorderRadius.circular(20.0),
+                ),
               ),
-              border: OutlineInputBorder(
-                borderSide: const BorderSide(color: Color.fromARGB(255, 0, 0, 0)),
-                borderRadius: BorderRadius.circular(10.0),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderSide: const BorderSide(color: Color.fromARGB(255, 0, 0, 0)),
-                borderRadius: BorderRadius.circular(20.0),
-              ),
-            ),
-          )),
+            )
+          ),
           Center(
             child:Container(
               margin: const EdgeInsets.symmetric(vertical: 30),
@@ -78,20 +76,21 @@ class _ChangeNameState extends State<ChangeName> {
                 borderRadius: BorderRadius.circular(29),
                 child: ElevatedButton(
                   style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(Color(0xFF000000)),
-                      padding: MaterialStateProperty.all(
-                          const EdgeInsets.symmetric(vertical: 20, horizontal: 40))),
-                  onPressed: (){
-                    handleSubmit();
-                  },
-                  child: Text(
-                    "Submit"
+                    backgroundColor: MaterialStateProperty.all(Color(0xFF000000)),
+                    padding: MaterialStateProperty.all(
+                        const EdgeInsets.symmetric(vertical: 20, horizontal: 40))),
+                    onPressed: (){
+                      handleSubmit();
+                    },
+                    child: const Text(
+                      "Submit"
+                    ),
                   ),
                 ),
-              ),
-            ) 
+              ) 
+            )
+          ]
         )
-        ])
       )
     );
   }

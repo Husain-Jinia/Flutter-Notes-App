@@ -54,7 +54,6 @@ class _AddPageState extends State<AddPage> {
       setState(() {
         isLoading=false;
       });
-      print("no");
     }else{
       setState(() {
         isLoading=false;
@@ -68,14 +67,13 @@ class _AddPageState extends State<AddPage> {
       if(allJournals==null){
         journals.add(journal);
         await sharedPreferences.saveToSharedPref('user-journals',jsonEncode(journals));
-        print("object");
-        print(await sharedPreferences.getFromSharedPref('user-journals'));
+        // ignore: use_build_context_synchronously
         Navigator.of(context).pop();
       }else{
         List decoded = jsonDecode(allJournals);
         decoded.add(journal);
         await sharedPreferences.saveToSharedPref('user-journals',jsonEncode(decoded));
-        print(await sharedPreferences.getFromSharedPref('user-journals'));
+        // ignore: use_build_context_synchronously
         Navigator.of(context).pop();
       }
     }
@@ -242,28 +240,26 @@ class _AddPageState extends State<AddPage> {
               ),
               Container(
               child: InputDecorator(
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     border: InputBorder.none
                   ),
-                  child:Container(
-                    child:  DropdownButton<String>(
-                    style: TextStyle(fontSize:16,color: Color.fromARGB(255, 0, 0, 0)),
-                    autofocus: true,
-                    value: currentCategory,
-                    items: categories.map<DropdownMenuItem<String>>((t) {
-                      return DropdownMenuItem<String>(
-                        child: Text(t),
-                        value: t,
-                      );
-                    }).toList(),
-                    onChanged: (newVal) {
-                      currentCategory = newVal!;
-                      setState(() {
-                        currentCategory = newVal;
-                      });
-                    },             
-                  )
-              )),
+                  child:DropdownButton<String>(
+                  style: const TextStyle(fontSize:16,color: Color.fromARGB(255, 0, 0, 0)),
+                  autofocus: true,
+                  value: currentCategory,
+                  items: categories.map<DropdownMenuItem<String>>((t) {
+                    return DropdownMenuItem<String>(
+                      child: Text(t),
+                      value: t,
+                    );
+                  }).toList(),
+                  onChanged: (newVal) {
+                    currentCategory = newVal!;
+                    setState(() {
+                      currentCategory = newVal;
+                    });
+                  },             
+                  )),
             ),
             Container(
               child:TextFormField(
@@ -280,7 +276,7 @@ class _AddPageState extends State<AddPage> {
                   controller: bodyController,
                   keyboardType: TextInputType.multiline,
                   maxLines: null,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     hintText: "Start by typing your notes here",
                     border: InputBorder.none
                   ),

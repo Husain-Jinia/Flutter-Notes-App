@@ -67,24 +67,21 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
         title: const Center(child:Text("JOURNALIT", style: TextStyle(color: Color.fromARGB(137, 0, 0, 0), fontWeight: FontWeight.bold))),
         backgroundColor: Colors.amber,
       ),
-      body:SingleChildScrollView(child:Container(
-      child:Column(
+      body:SingleChildScrollView(child:Column(
         children: [
-          Container(
+          SizedBox(
             height: MediaQuery.of(context).size.height,
-            
             child: 
             isPinCreated==false?
             Column(
-              
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
               Center(child:Image.asset('assets/images/logo-journalit.png', width: 200,height: 200,)),
               // SizedBox(height: 15),
               // Center(child:Text("JORNALiT", style: TextStyle(fontSize: 20),)),
-              SizedBox(height:10),
-              Center(child:Text("* Fill the information below to continue *",style: TextStyle(fontSize: 15,color: Colors.black38))),
-              SizedBox(height:25),
+              const SizedBox(height:10),
+              const Center(child:Text("* Fill the information below to continue *",style: TextStyle(fontSize: 15,color: Colors.black38))),
+              const SizedBox(height:25),
               Container(
                 margin: EdgeInsets.fromLTRB(25, 0, 25, 0),
                 child:TextFormField(
@@ -110,14 +107,14 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
               ),
             ),
               )),
-              PinTitle(
+              const PinTitle(
                 marginTop: 20,
                 title: 'New Pin',
               ),
               ChangePinFormFields(
                 controller: _newPinController,
               ),
-              PinTitle(
+              const PinTitle(
                 marginTop: 30,
                 title: 'confirm Pin',
               ),
@@ -126,7 +123,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                 
               ),
               Container(
-                margin: EdgeInsets.only(top: 20),
+                margin: const EdgeInsets.only(top: 20),
                 child: Center(
                   child: 
                     RoundedButton(
@@ -169,7 +166,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
             )
           )
         ]
-      ))));
+      )));
           
   }
 }

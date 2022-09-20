@@ -19,20 +19,22 @@ class _ChangePinPageState extends State<ChangePinPage> {
   Widget build(BuildContext context) {
   SharedPreferencesService sharedPreferences = SharedPreferencesService();
 
-    TextEditingController _newPinController = TextEditingController();
-    TextEditingController _oldPinController = TextEditingController();
-    TextEditingController _confirmPinController = TextEditingController();
+  TextEditingController newPinController=TextEditingController();
+  TextEditingController confirmPinController = TextEditingController();
+  TextEditingController oldPinController = TextEditingController();
+
+  
 
     handleSubmit()async {
       String? pin = await sharedPreferences.getFromSharedPref('user-pin');
-      if(_oldPinController.text.isEmpty || _newPinController.text.isEmpty || _confirmPinController.text.isEmpty){
+      if(oldPinController.text.isEmpty || newPinController.text.isEmpty || confirmPinController.text.isEmpty){
         print("no");
-      }else if(_newPinController.text != _confirmPinController.text){
+      }else if(newPinController.text != confirmPinController.text){
         print("no");
-      }else if(_oldPinController!= pin){
+      }else if(oldPinController.text!= pin){
         print("wrong");
       }else{
-        await sharedPreferences.saveToSharedPref('user-pin', _newPinController.text);
+        await sharedPreferences.saveToSharedPref('user-pin', newPinController.text);
       }
     }
 
@@ -49,26 +51,26 @@ class _ChangePinPageState extends State<ChangePinPage> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-              PinTitle(
+              const PinTitle(
                 marginTop: 20,
                 title: 'Old Pin',
               ),
               ChangePinFormFields(
-                controller: _oldPinController,
+                controller: oldPinController,
               ),
-              PinTitle(
+              const PinTitle(
                 marginTop: 20,
                 title: 'New Pin',
               ),
               ChangePinFormFields(
-                controller: _newPinController,
+                controller: newPinController,
               ),
-              PinTitle(
+              const PinTitle(
                 marginTop: 30,
                 title: 'confirm Pin',
               ),
               ChangePinFormFields(
-                controller: _confirmPinController,  
+                controller: confirmPinController,  
               ),
             Center(
             child:Container(

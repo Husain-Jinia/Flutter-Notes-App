@@ -20,43 +20,41 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   SharedPreferencesService sharedPreferences = SharedPreferencesService();
+  TextEditingController addChecklistController = TextEditingController();
 
   List<dynamic> journals = [];
   late Widget profileIcon;
-  String emoticon = "129489";
-  TextEditingController addChecklistController = TextEditingController();
   late String? name = "";
+  String emoticon = "129489";
+
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     setName();
   }
   
   setName() async {
     String? userName = await sharedPreferences.getFromSharedPref("user-name");
-    print(userName);
     setState(() {
       name = userName;
     });
   }
 
-  setNotes()async{
-    String? allChecklists  = await sharedPreferences.getFromSharedPref('user-journals');
-    if (allChecklists!=null) {
-      List<dynamic> notesDecoded = jsonDecode(allChecklists);
+  setJournals()async{
+    String? allJournals  = await sharedPreferences.getFromSharedPref('user-journals');
+    if (allJournals!=null) {
+      List<dynamic> notesDecoded = jsonDecode(allJournals);
       List reversedList = List.from(notesDecoded.reversed);
       return reversedList;
     }
   }
 
   setChecklists()async{
-    String? allJournals  = await sharedPreferences.getFromSharedPref('all-checklist');
-    if (allJournals!=null) {
-      List<dynamic> notesDecoded = jsonDecode(allJournals);
-      print(allJournals);
-      List reversedList = List.from(notesDecoded.reversed);
+    String? allChecklists  = await sharedPreferences.getFromSharedPref('all-checklist');
+    if (allChecklists!=null) {
+      List<dynamic> taskDecoded = jsonDecode(allChecklists);
+      List reversedList = List.from(taskDecoded.reversed);
       if(reversedList.length>3){
       var myRange = reversedList.getRange(0, 3).toList();
       return myRange;
@@ -82,26 +80,23 @@ class _HomePageState extends State<HomePage> {
 
   
   removeItem(int index) async {
-    String? allJournals  = await sharedPreferences.getFromSharedPref('all-checklist');
-    if(allJournals!=null){
-      List decodedList = jsonDecode(allJournals);
+    String? allChecklists  = await sharedPreferences.getFromSharedPref('all-checklist');
+    if(allChecklists!=null){
+      List decodedList = jsonDecode(allChecklists);
       List reversedList = List.from(decodedList.reversed);
       reversedList.removeAt(index);
       List finalList = List.from(reversedList.reversed);
       await sharedPreferences.saveToSharedPref('all-checklist', jsonEncode(finalList));
       setState(() {
-        
       });
     }
-    
-    
   }
 
   taskUpdation(int index) async{
-    String? allJournals  = await sharedPreferences.getFromSharedPref('all-checklist');
-    if(allJournals!=null){
-      List<dynamic> notesDecoded = jsonDecode(allJournals);
-      List reversedList = List.from(notesDecoded.reversed);
+    String? allChecklists  = await sharedPreferences.getFromSharedPref('all-checklist');
+    if(allChecklists!=null){
+      List<dynamic> taskDecoded = jsonDecode(allChecklists);
+      List reversedList = List.from(taskDecoded.reversed);
       reversedList.removeAt(index);
       await sharedPreferences.saveToSharedPref('all-checklist', jsonEncode(reversedList));
     }
@@ -109,14 +104,12 @@ class _HomePageState extends State<HomePage> {
 
   submitCheckLists()async{
     if(addChecklistController.text.isEmpty){
-      print("bruh");
     }else{
-      String? allJournals  = await sharedPreferences.getFromSharedPref('all-checklist');
-      if (allJournals!=null) {
-        List decodedJournals = jsonDecode(allJournals);
-        decodedJournals.add(addChecklistController.text);
-        await sharedPreferences.saveToSharedPref('all-checklist', jsonEncode(decodedJournals));
-        print(decodedJournals);
+      String? allChecklists  = await sharedPreferences.getFromSharedPref('all-checklist');
+      if (allChecklists!=null) {
+        List decodedChecklists = jsonDecode(allChecklists);
+        decodedChecklists.add(addChecklistController.text);
+        await sharedPreferences.saveToSharedPref('all-checklist', jsonEncode(decodedChecklists));
         setState(() {
           
         });
@@ -175,18 +168,16 @@ class _HomePageState extends State<HomePage> {
                   bottomLeft: Radius.circular(20), bottomRight: Radius.circular(20)),
               color: Colors.amber),
         ),
-        // title: const Text("JournalIt", style: TextStyle(color: Color.fromARGB(255, 93, 22, 22), fontWeight: FontWeight.bold)),
-        title:
-        Row(
+        title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children:[
         Row(
           children: [
           Image.asset('assets/images/logo-journalit-2.png', width: 55,height: 55,),
-          SizedBox(width: 10,),
+          const SizedBox(width: 10,),
           Text("Welcome, $name",
           overflow: TextOverflow.ellipsis,
-          style: TextStyle(
+          style: const TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 17,
             color: Color.fromARGB(255, 52, 63, 71)))]),
@@ -205,7 +196,7 @@ class _HomePageState extends State<HomePage> {
       body:Container(
         
       child:ListView(children: [
-      Container(
+      SizedBox(
       height: MediaQuery.of(context).size.height * 0.45,
       child:SingleChildScrollView(
           child:Column(
@@ -218,20 +209,20 @@ class _HomePageState extends State<HomePage> {
                 });
               },
               child: Container(
-              padding: EdgeInsets.only(left:20,top: 15, bottom: 10, right: 20),
+              padding: const EdgeInsets.only(left:20,top: 15, bottom: 10, right: 20),
               child:Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                 
-                Text("All Journals",
+                const Text("All Journals",
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Color.fromARGB(255, 52, 63, 71)),
                 ),
                 Row(
-                  children: [
-                    Text("Refresh",
-                style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold,color:Color.fromARGB(255, 86, 127, 160)),
-                ),
-                Icon(Icons.refresh, size: 17,color:Color.fromARGB(255, 86, 127, 160))
+                children: const [
+                  Text("Refresh",
+                  style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold,color:Color.fromARGB(255, 86, 127, 160)),
+                  ),
+                  Icon(Icons.refresh, size: 17,color:Color.fromARGB(255, 86, 127, 160))
                   ],
                 )
                 
@@ -239,10 +230,10 @@ class _HomePageState extends State<HomePage> {
             ),
             ),
             FutureBuilder(
-            future: setNotes(),
+            future: setJournals(),
             builder:(context, AsyncSnapshot snapshot) {
               if (snapshot.hasError) {
-                return Center(child:Text('No notes to display'));
+                return const Center(child:Text('No notes to display'));
               } else if (!snapshot.hasData) {
                 return const Center(
                     child: Text("No notes to display"));
@@ -257,16 +248,13 @@ class _HomePageState extends State<HomePage> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    
                       ListView.builder(
-                      padding: EdgeInsets.only(top: 10),
-                      physics: NeverScrollableScrollPhysics(),
+                      padding: const EdgeInsets.only(top: 10),
+                      physics: const NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
                       itemCount: snapshot.data.length,
-                      
                       itemBuilder: (context, index) {
                         setProfileIcons(snapshot.data[index]);
-                        print(snapshot.data[index]);
                         return Container(
                           margin: const EdgeInsets.only(bottom: 15, left: 10, right: 10),
                           height: 79,
@@ -295,36 +283,37 @@ class _HomePageState extends State<HomePage> {
                                     ),
                                   ),
                                   const SizedBox(width: 10),
-                                    Expanded(
-                                          child:Text(snapshot.data[index]["title"],
-                                              maxLines:1,
-                                              style: const TextStyle(
-                                                  fontSize: 17.0,
-                                                  color: Colors.black,
-                                                  fontWeight: FontWeight.bold),
-                                          ),
+                                  Expanded(
+                                    child:Text(snapshot.data[index]["title"],
+                                        maxLines:1,
+                                        style: const TextStyle(
+                                          fontSize: 17.0,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.bold
+                                        ),
+                                      ),
                                     ),
-                                     Row(children: [Padding(
-                                    padding: const EdgeInsets.only(right: 8.0, left: 5),
-                                    child: GestureDetector( 
-                                      onTap: (){
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(builder: (context) => 
-                                          EditPage(
-                                            title: snapshot.data[index]["title"],
-                                            body: snapshot.data[index]["body"],
-                                            tag: snapshot.data[index]["tags"],
-                                            index: index,
-                                          )),
+                                    Row(children: [Padding(
+                                      padding: const EdgeInsets.only(right: 8.0, left: 5),
+                                      child: GestureDetector( 
+                                        onTap: (){
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(builder: (context) => 
+                                            EditPage(
+                                              title: snapshot.data[index]["title"],
+                                              body: snapshot.data[index]["body"],
+                                              tag: snapshot.data[index]["tags"],
+                                              index: index,
+                                            )
+                                          ),
                                         );
                                       },
                                       child: const Icon(
-                                      Icons.edit,
-                                      color: Color.fromARGB(137, 105, 105, 105),
-                                      size: 22,
-                                    )
-                                    
+                                        Icons.edit,
+                                        color: Color.fromARGB(137, 105, 105, 105),
+                                        size: 22,
+                                      )
                                     ),
                                   ),
                                   Padding(
@@ -332,50 +321,17 @@ class _HomePageState extends State<HomePage> {
                                     child: GestureDetector( 
                                       onTap: (){
                                         removeNote(index);
-                                        
                                       },
                                       child: const Icon(
-                                      Icons.delete,
-                                      color: Color.fromARGB(137, 105, 105, 105),
-                                      size: 22,
-                                    )
-                                    
+                                        Icons.delete,
+                                        color: Color.fromARGB(137, 105, 105, 105),
+                                        size: 22,
+                                        )
+                                      ),
                                     ),
-                                  ),
-                                     ])
+                                  ])
                                 ],
                               ),
-                              // trailing: 
-                                
-                              //   Column(
-                              //   mainAxisAlignment: MainAxisAlignment.center,
-                              //   children: [
-                              //     Padding(
-                              //       padding: const EdgeInsets.only(right: 15.0),
-                              //       child: GestureDetector( 
-                              //         onTap: (){
-                              //           Navigator.push(
-                              //             context,
-                              //             MaterialPageRoute(builder: (context) => 
-                              //             EditPage(
-                              //               title: snapshot.data[index]["title"],
-                              //               body: snapshot.data[index]["body"],
-                              //               tag: snapshot.data[index]["tags"],
-                              //               index: index,
-                              //             )),
-                              //           );
-                              //         },
-                              //         child: const Icon(
-                              //         Icons.edit,
-                              //         color: Color.fromARGB(137, 105, 105, 105),
-                              //         size: 22,
-                              //       )
-                                    
-                              //       ),
-                              //     ),
-                                  
-                              //   ],
-                              // ),
                             ),
                           )
                         );

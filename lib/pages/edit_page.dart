@@ -73,7 +73,6 @@ class _EditPageState extends State<EditPage> {
       setState(() {
         isLoading=false;
       });
-      print("no");
     }else{
       setState(() {
         isLoading=false;
@@ -86,7 +85,6 @@ class _EditPageState extends State<EditPage> {
         reversedList[index]["body"] = bodyController.text;
         reversedList[index]["tags"] = currentCategory;
         await sharedPreferences.saveToSharedPref('user-journals',jsonEncode(decodedJournals));
-        print(await sharedPreferences.getFromSharedPref('user-journals'));
         Navigator.of(context).pop();
       }
     }
@@ -95,7 +93,7 @@ class _EditPageState extends State<EditPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 219, 210, 127),
+      backgroundColor: const Color.fromARGB(255, 219, 210, 127),
       appBar: AppBar(
         backgroundColor: Colors.amber,
         title: const Text("Add page"),
@@ -133,44 +131,38 @@ class _EditPageState extends State<EditPage> {
                 style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
              ),
-              Container(
-              child: InputDecorator(
-                  decoration: InputDecoration(
+              InputDecorator(
+                  decoration: const InputDecoration(
                     border: InputBorder.none
                   ),
-                  child:Container(
-                    child:  DropdownButton<String>(
-                    style: TextStyle(fontSize:16,color: Color.fromARGB(255, 0, 0, 0)),
-                    autofocus: true,
-                    value: currentCategory,
-                    items: categories.map<DropdownMenuItem<String>>((t) {
-                      return DropdownMenuItem<String>(
-                        child: Text(t),
-                        value: t,
-                      );
-                    }).toList(),
-                    onChanged: (newVal) {
-                      currentCategory = newVal!;
-                      setState(() {
-                        currentCategory = newVal;
-                      });
-                    },             
-                  )
-              )),
-            ),    
+                  child:DropdownButton<String>(
+                  style: const TextStyle(fontSize:16,color: Color.fromARGB(255, 0, 0, 0)),
+                  autofocus: true,
+                  value: currentCategory,
+                  items: categories.map<DropdownMenuItem<String>>((t) {
+                    return DropdownMenuItem<String>(
+                      value: t,
+                      child: Text(t),
+                    );
+                  }).toList(),
+                  onChanged: (newVal) {
+                    currentCategory = newVal!;
+                    setState(() {
+                      currentCategory = newVal;
+                    });
+                  },             
+                )
+              ),    
              Expanded(
                 child:TextFormField(
                   controller: bodyController,
                   keyboardType: TextInputType.multiline,
                   maxLines: null,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     hintText: "Start by typing your notes here",
                     border: InputBorder.none
                   ),
-            )),
-            // TODO: create a select field
-            // TODO: Implemet an image picker
-                          
+                )),           
               ],
             ),
             

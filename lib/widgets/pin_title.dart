@@ -18,7 +18,7 @@ class _PinTitleState extends State<PinTitle> {
       margin: EdgeInsets.only(top: widget.marginTop, left: 40, bottom: 5),
       child: Text(widget.title,
           textAlign: TextAlign.center,
-          style: TextStyle(
+          style: const TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
               color: Color.fromARGB(255, 107, 107, 107))),

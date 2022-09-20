@@ -17,17 +17,17 @@ class FolderPage extends StatefulWidget {
 class _FolderPageState extends State<FolderPage> {
   SharedPreferencesService sharedPreferences = SharedPreferencesService();
   TextEditingController addCategoryController = TextEditingController();
+
   List categories = ["General", "Travel", "Study", "Todo", "Diary", "Notes"];
   int length =0;
+
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    print(categories.length);
     getCategories();
   }
 
-    getCategories()async {
+  getCategories()async {
     String? allCategories = await sharedPreferences.getFromSharedPref('all-categories');
     if (allCategories == null) {
       await sharedPreferences.saveToSharedPref('all-categories', jsonEncode(categories));
@@ -46,8 +46,7 @@ class _FolderPageState extends State<FolderPage> {
       setState(() {
       });
     }
-    else if(addCategoryController.text == null){
-      print("error");
+    else if(addCategoryController.text.isEmpty){
     }else{
       categories.add(addCategoryController.text);
       await sharedPreferences.saveToSharedPref('all-categories', jsonEncode(categories));
@@ -59,7 +58,7 @@ class _FolderPageState extends State<FolderPage> {
 
   addCategoryWidget(){
     return showModalBottomSheet(
-      shape:RoundedRectangleBorder(
+      shape:const RoundedRectangleBorder(
         borderRadius:BorderRadius.vertical(top: Radius.circular(25.0))),
         context: context,
         isScrollControlled:true,
@@ -67,35 +66,32 @@ class _FolderPageState extends State<FolderPage> {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal:18),
           child:Container(
-            margin: EdgeInsets.fromLTRB(15,15,15,15),
+            margin: const EdgeInsets.fromLTRB(15,15,15,15),
             padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
             child: Column(
               crossAxisAlignment:CrossAxisAlignment.start,
               mainAxisSize:MainAxisSize.min,
               children: <Widget>[
-                Container(
-                  child:TextFormField(
-                    controller: addCategoryController,
-                    decoration:InputDecoration(
-                      labelText:'Enter your task',
-                      focusedBorder:OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                        borderSide: const BorderSide(
-                          color: Color.fromARGB(255, 115, 115, 115),
-                        ),
-                      ),
-                      enabledBorder:OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                        borderSide: const BorderSide(
-                          color: Color.fromARGB(255, 115, 115, 115),
-                        ),
+                TextFormField(
+                  controller: addCategoryController,
+                  decoration:InputDecoration(
+                    labelText:'Enter your task',
+                    focusedBorder:OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                      borderSide: const BorderSide(
+                        color: Color.fromARGB(255, 115, 115, 115),
                       ),
                     ),
-                    autofocus:true,
+                    enabledBorder:OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                      borderSide: const BorderSide(
+                        color: Color.fromARGB(255, 115, 115, 115),
+                      ),
+                    ),
                   ),
+                  autofocus:true,
                 ),
-                Container(
-                child: Center(
+                Center(
                   child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 10),
@@ -111,7 +107,6 @@ class _FolderPageState extends State<FolderPage> {
                   },
                 ),
                 )
-              )
             ],
           ),
         )
@@ -130,34 +125,30 @@ class _FolderPageState extends State<FolderPage> {
       body:
         SingleChildScrollView(
         child:Wrap(
-                  direction: Axis.horizontal,
-                  
-                  children: List.generate(categories.length, (index){
-                  return Container(
-                    width: 119,
-                    padding: EdgeInsets.all(5),
-                    child:GestureDetector(
-
-                          child:
-                          Column(
-
-                            children: [
-                        
-                          Icon(Icons.folder, size: 110,color: Color.fromARGB(255, 64, 86, 104),),
-                          Text(categories[index],maxLines: 3,style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600, color: Colors.grey[800]),)
-                          ],),
-
-                    onTap: (){
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) =>  AllJournals(tag: categories[index],)),
-                      );
-                    },
-                  )
+          direction: Axis.horizontal,
+          children: List.generate(categories.length, (index){
+          return Container(
+            width: 119,
+            padding: EdgeInsets.all(5),
+            child:GestureDetector(
+              child:
+              Column(
+                children: [
+                  const Icon(Icons.folder, size: 110,color: Color.fromARGB(255, 64, 86, 104),),
+                  Text(categories[index],maxLines: 3,style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600, color: Colors.grey[800]),)
+                  ],
+                ),
+              onTap: (){
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) =>  AllJournals(tag: categories[index],)),
                 );
-              }
+              },
             )
-          )
+          );
+        }
+      )
+    )
    ),
    floatingActionButton: FloatingActionButton(
         backgroundColor: Color.fromARGB(255, 191, 153, 14),

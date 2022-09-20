@@ -17,7 +17,6 @@ class ChangePinFormFields extends StatefulWidget {
 
 class _ChangePinFormFieldsState extends State<ChangePinFormFields> {
 
-
   @override
   void initState() {
     // TODO: implement initState
@@ -31,7 +30,7 @@ class _ChangePinFormFieldsState extends State<ChangePinFormFields> {
       final defaultPinTheme = PinTheme(
         width: 63,
         height: 63,
-        textStyle: TextStyle(fontSize: 22, color: Color.fromRGBO(30, 60, 87, 1), fontWeight: FontWeight.w600),
+        textStyle: const TextStyle(fontSize: 22, color: Color.fromRGBO(30, 60, 87, 1), fontWeight: FontWeight.w600),
         decoration: BoxDecoration(
           color: fillColor,
           

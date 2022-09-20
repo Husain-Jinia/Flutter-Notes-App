@@ -20,10 +20,10 @@ class _SettingsPageState extends State<SettingsPage> {
       ),
       // ignore: prefer_const_literals_to_create_immutables
       body:Container(
-        margin: EdgeInsets.only(top: 10),
+        margin: const EdgeInsets.only(top: 10),
         child:Column(children: [
           GestureDetector(
-         child:Card(
+         child:const Card(
           child: ListTile(
             horizontalTitleGap: 10,
             minVerticalPadding: 20,
@@ -39,7 +39,7 @@ class _SettingsPageState extends State<SettingsPage> {
             },
           ),
           GestureDetector(
-          child:Card(
+          child:const Card(
             
           child: ListTile(
             horizontalTitleGap: 10,
@@ -52,8 +52,7 @@ class _SettingsPageState extends State<SettingsPage> {
           ),onTap: (){
             Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => 
-                ChangeName()),
+                MaterialPageRoute(builder: (context) => ChangeName()),
               );
           },)
       ],)

@@ -64,7 +64,7 @@ class _AllJournalsState extends State<AllJournals> {
   }
 
 
-    void setProfileIcons(emoji) async {
+  void setProfileIcons(emoji) async {
     emoticon =
       emoji["image"] != ""
       ? emoji["image"]
@@ -99,14 +99,14 @@ class _AllJournalsState extends State<AllJournals> {
           crossAxisAlignment: CrossAxisAlignment.start,
         children:[
           Container(
-            padding: EdgeInsets.all(15),
+            padding: const EdgeInsets.all(15),
             child: Text("CATEGORY : ${currentTag.toUpperCase()}",style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold,color: Color.fromARGB(255, 43, 60, 80))),
           ),
           FutureBuilder(
             future: setNotes(),
             builder:(context, AsyncSnapshot snapshot) {
               if (snapshot.hasError) {
-                return Center(child:Text('No notes to display'));
+                return const Center(child:Text('No notes to display'));
               } else if (!snapshot.hasData) {
                 return const Center(
                     child: Text("No notes to display"));
@@ -117,12 +117,11 @@ class _AllJournalsState extends State<AllJournals> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                       snapshot.data==null?
-                        Container(
-                          child:Center(child:Text("No journals to display"))
-                        ):
+                        const Center(child:Text("No journals to display"))
+                        :
                       ListView.builder(
-                      padding: EdgeInsets.only(top: 10),
-                      physics: NeverScrollableScrollPhysics(),
+                      padding: const EdgeInsets.only(top: 10),
+                      physics: const NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
                       itemCount: snapshot.data.length,
                       
@@ -161,21 +160,10 @@ class _AllJournalsState extends State<AllJournals> {
                                   ),
                                   const SizedBox(width: 10),
                                     Expanded(
-                                          child:Text(snapshot.data[index]["title"],
-                                              maxLines:1,
-                                              style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold,color: Color.fromARGB(255, 43, 55, 69),
-                                          )),
-                                      // const SizedBox(height: 5),
-                                      // Row(
-                                      //   children: [
-
-                                      //     Text(
-                                      //       snapshot.data[index]["tags"],
-                                      //       style: const TextStyle(
-                                      //       fontSize: 12, fontWeight: FontWeight.w500),
-                                      //     ),
-                                      //   ],
-                                      // ),
+                                        child:Text(snapshot.data[index]["title"],
+                                            maxLines:1,
+                                            style: const TextStyle(fontSize: 16,fontWeight: FontWeight.bold,color: Color.fromARGB(255, 43, 55, 69),
+                                        )),
                                     )
                                 ],
                               ),

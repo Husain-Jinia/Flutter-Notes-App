@@ -1,13 +1,8 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:journaling_app/pages/home.dart';
-
 import '../pages/navigation.dart';
 import '../sharedPreferences.dart';
-
-// Project imports:
-
-// import 'package:edison/constants.dart';
 
 class RoundedButton extends StatefulWidget {
   final String text;
@@ -39,6 +34,7 @@ class _RoundedButtonState extends State<RoundedButton> {
      if (widget.isPinCreated == true) {
       if(widget.controller.text == userPin){
       await sharedPreferences.saveToSharedPref("user-pin", widget.controller.text);    
+      // ignore: use_build_context_synchronously
       Navigator.pushReplacement<void, void>(
         context,
         MaterialPageRoute<void>(
@@ -46,13 +42,13 @@ class _RoundedButtonState extends State<RoundedButton> {
         ),
       );
       }else{
-        print("nope");
       }
 
      } else {
        if (widget.controller.text == widget.confirmController.text && name.text.isNotEmpty) {
          await sharedPreferences.saveToSharedPref("user-pin", widget.controller.text);
          await sharedPreferences.saveToSharedPref("user-name", name.text);
+          // ignore: use_build_context_synchronously
           Navigator.pushReplacement<void, void>(
               context,
               MaterialPageRoute<void>(
@@ -60,7 +56,6 @@ class _RoundedButtonState extends State<RoundedButton> {
               ),
             );
        }else{
-        print("no");
        }
      }
      
