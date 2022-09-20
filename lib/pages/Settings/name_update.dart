@@ -31,6 +31,7 @@ class _ChangeNameState extends State<ChangeName> {
 
   handleSubmit() async{
     await sharedPreferences.saveToSharedPref('user-name', _nameController.text);
+    Navigator.pop(context);
   }
   
   @override
