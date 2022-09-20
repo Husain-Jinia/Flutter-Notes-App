@@ -542,7 +542,7 @@ class _HomePageState extends State<HomePage> {
       ]
       )),                          
       floatingActionButton: FloatingActionButton.extended(
-        backgroundColor: Colors.amber,
+        backgroundColor: Color.fromARGB(255, 191, 153, 14),
         onPressed: (){
           Navigator.push(
             context,
@@ -550,7 +550,7 @@ class _HomePageState extends State<HomePage> {
           );
           setState(() {});
         },
-          label:Row(children: const [Text("Create Note",style: TextStyle(color: Color.fromARGB(255, 255, 255, 255)),)],)
+          label:Row(children: const [Icon(Icons.add),SizedBox(width: 5,),Text("Create Note",style: TextStyle(color: Color.fromARGB(255, 255, 255, 255)),)],)
       ),
     );
   }

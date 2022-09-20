@@ -159,7 +159,7 @@ class _FolderPageState extends State<FolderPage> {
           });
         },
         tooltip: 'Add',
-        label: Row(children:const [ Icon(Icons.add), Text("Add a new Category")]),
+        label: Row(children:const [ Icon(Icons.add),SizedBox(width: 5,), Text("Add a new Category")]),
       ),
    );
   }

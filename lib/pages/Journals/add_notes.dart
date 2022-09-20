@@ -312,7 +312,7 @@ class _AddPageState extends State<AddPage> {
         tooltip: 'wait',
         label: const Text("submitting.... please wait"),
       ):FloatingActionButton.extended(
-        backgroundColor: Colors.amber,
+        backgroundColor: Color.fromARGB(255, 191, 153, 14),
         onPressed: (){
           setState(() {
             true;
@@ -320,7 +320,7 @@ class _AddPageState extends State<AddPage> {
           handleSubmit();
         },
         tooltip: 'Add',
-        label: Row(children: const [Icon(Icons.add),SizedBox(width: 3),Text("Save note")]),
+        label: Row(children: const [Icon(Icons.add),SizedBox(width: 5),Text("Save note")]),
       ),
       body: Container(
         padding: const EdgeInsets.fromLTRB(15,15,15,15),
