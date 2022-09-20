@@ -75,7 +75,7 @@ class _FolderPageState extends State<FolderPage> {
                 TextFormField(
                   controller: addCategoryController,
                   decoration:InputDecoration(
-                    labelText:'Enter your task',
+                    labelText:'Enter category name',
                     focusedBorder:OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.0),
                       borderSide: const BorderSide(
@@ -150,7 +150,7 @@ class _FolderPageState extends State<FolderPage> {
       )
     )
    ),
-   floatingActionButton: FloatingActionButton(
+   floatingActionButton: FloatingActionButton.extended(
         backgroundColor: Color.fromARGB(255, 191, 153, 14),
         onPressed: (){
             addCategoryWidget();
@@ -159,7 +159,7 @@ class _FolderPageState extends State<FolderPage> {
           });
         },
         tooltip: 'Add',
-        child: const Icon(Icons.add),
+        label: Row(children:const [ Icon(Icons.add), Text("Add a new Category")]),
       ),
    );
   }

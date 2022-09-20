@@ -261,78 +261,93 @@ class _HomePageState extends State<HomePage> {
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
                               ),
-                          child: Card(
-                            elevation: 1,
-                            margin: EdgeInsets.zero,
-                            color:  Colors.grey[100],
-                            child: ListTile(
-                              contentPadding: const EdgeInsets.only(left: 8, bottom: 4, top: 2, right: 4),
-                              title: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(bottom: 6.0, top: 2.0),
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(5.0),
-                                      child: Container(
-                                        height: 60.0,
-                                        width: 60.0,
-                                        color: Colors.grey[300],
-                                        child: profileIcon,
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(width: 10),
-                                  Expanded(
-                                    child:Text(snapshot.data[index]["title"],
-                                        maxLines:1,
-                                        style: const TextStyle(
-                                          fontSize: 17.0,
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.bold
+                          child: GestureDetector(
+                            onTap: (){
+                               Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => 
+                                  EditPage(
+                                    title: snapshot.data[index]["title"],
+                                    body: snapshot.data[index]["body"],
+                                    tag: snapshot.data[index]["tags"],
+                                    index: index,
+                                  )
+                                )
+                              );
+                            },
+                            child:Card(
+                              elevation: 1,
+                              margin: EdgeInsets.zero,
+                              color:  Colors.grey[100],
+                              child: ListTile(
+                                contentPadding: const EdgeInsets.only(left: 8, bottom: 4, top: 2, right: 4),
+                                title: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(bottom: 6.0, top: 2.0),
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(5.0),
+                                        child: Container(
+                                          height: 60.0,
+                                          width: 60.0,
+                                          color: Colors.grey[300],
+                                          child: profileIcon,
                                         ),
                                       ),
                                     ),
-                                    Row(children: [Padding(
-                                      padding: const EdgeInsets.only(right: 8.0, left: 5),
-                                      child: GestureDetector( 
-                                        onTap: (){
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(builder: (context) => 
-                                            EditPage(
-                                              title: snapshot.data[index]["title"],
-                                              body: snapshot.data[index]["body"],
-                                              tag: snapshot.data[index]["tags"],
-                                              index: index,
-                                            )
+                                    const SizedBox(width: 10),
+                                    Expanded(
+                                      child:Text(snapshot.data[index]["title"],
+                                          maxLines:1,
+                                          style: const TextStyle(
+                                            fontSize: 17.0,
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.bold
                                           ),
-                                        );
-                                      },
-                                      child: const Icon(
-                                        Icons.edit,
-                                        color: Color.fromARGB(137, 105, 105, 105),
-                                        size: 22,
-                                      )
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(right: 5.0),
-                                    child: GestureDetector( 
-                                      onTap: (){
-                                        removeNote(index);
-                                      },
-                                      child: const Icon(
-                                        Icons.delete,
-                                        color: Color.fromARGB(137, 105, 105, 105),
-                                        size: 22,
+                                        ),
+                                      ),
+                                      Row(children: [Padding(
+                                        padding: const EdgeInsets.only(right: 8.0, left: 5),
+                                        child: GestureDetector( 
+                                          onTap: (){
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(builder: (context) => 
+                                              EditPage(
+                                                title: snapshot.data[index]["title"],
+                                                body: snapshot.data[index]["body"],
+                                                tag: snapshot.data[index]["tags"],
+                                                index: index,
+                                              )
+                                            ),
+                                          );
+                                        },
+                                        child: const Icon(
+                                          Icons.edit,
+                                          color: Color.fromARGB(137, 105, 105, 105),
+                                          size: 22,
                                         )
                                       ),
                                     ),
-                                  ])
-                                ],
+                                    Padding(
+                                      padding: const EdgeInsets.only(right: 5.0),
+                                      child: GestureDetector( 
+                                        onTap: (){
+                                          removeNote(index);
+                                        },
+                                        child: const Icon(
+                                          Icons.delete,
+                                          color: Color.fromARGB(137, 105, 105, 105),
+                                          size: 22,
+                                          )
+                                        ),
+                                      ),
+                                    ])
+                                  ],
+                                ),
                               ),
-                            ),
+                            )
                           )
                         );
                       }
@@ -550,7 +565,8 @@ class _HomePageState extends State<HomePage> {
                 );
               }})
     ]))])),                          
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: FloatingActionButton.extended(
+        
         backgroundColor: Color.fromARGB(255, 191, 153, 14),
         onPressed: (){
           Navigator.push(
@@ -561,8 +577,7 @@ class _HomePageState extends State<HomePage> {
     // Call setState to refresh the page.
           });
         },
-        tooltip: 'Add',
-        child: const Icon(Icons.add),
+          label:Row(children: [Text("Create Note")],)
       ),
     );
   }

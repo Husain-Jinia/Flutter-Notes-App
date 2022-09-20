@@ -101,12 +101,12 @@ class _EditPageState extends State<EditPage> {
       
       floatingActionButton: 
       isLoading?
-      FloatingActionButton(
+      FloatingActionButton.extended(
         onPressed: (){
         },
         tooltip: 'wait',
-        child: const Text("submitting.... please wait"),
-      ):FloatingActionButton(
+        label: const Text("submitting.... please wait"),
+      ):FloatingActionButton.extended(
         onPressed: (){
           setState(() {
             true;
@@ -114,7 +114,7 @@ class _EditPageState extends State<EditPage> {
           handleSubmit();
         },
         tooltip: 'Add',
-        child: const Icon(Icons.add),
+        label: const Text("Save edited note"),
       ),
       body: Container(
         padding: const EdgeInsets.all(15),
