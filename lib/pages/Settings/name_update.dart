@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import '../../sharedPreferences.dart';
+import '../../utils/enums.dart';
+import '../Notifications/fToast_style.dart';
 
 class ChangeName extends StatefulWidget {
   const ChangeName({Key? key}) : super(key: key);
@@ -12,12 +15,14 @@ class ChangeName extends StatefulWidget {
 class _ChangeNameState extends State<ChangeName> {
   SharedPreferencesService sharedPreferences = SharedPreferencesService();
   TextEditingController _nameController = TextEditingController();
+  late FToast fToast;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     getInitialName();
+    fToast = FToast();
   }
 
   getInitialName() async{
@@ -30,8 +35,15 @@ class _ChangeNameState extends State<ChangeName> {
   }
 
   handleSubmit() async{
+    if(_nameController.text.isEmpty){
+      fToast.init(context);
+      showToast(fToast, "Name cannot be empty", NotificationStatus.failure);
+    }else{
     await sharedPreferences.saveToSharedPref('user-name', _nameController.text);
+    fToast.init(context);
+    showToast(fToast, "Name changed successfully", NotificationStatus.success);
     Navigator.pop(context);
+    }
   }
   
   @override

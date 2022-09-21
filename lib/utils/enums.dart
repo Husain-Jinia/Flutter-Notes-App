@@ -1,0 +1,1 @@
+enum NotificationStatus {success, failure}

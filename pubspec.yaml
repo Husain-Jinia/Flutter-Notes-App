@@ -38,6 +38,7 @@ dependencies:
   auto_size_text: ^3.0.0
   pinput: ^2.2.11
   google_fonts: ^2.1.0 
+  fluttertoast: ^8.0.9
 
 dev_dependencies:
   flutter_test:

@@ -1,10 +1,13 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:journaling_app/sharedPreferences.dart';
 
+import '../../utils/enums.dart';
 import '../../widgets/PinUpdate/pin_style.dart';
 import '../../widgets/PinUpdate/pin_title.dart';
+import '../Notifications/fToast_style.dart';
 
 class ChangePinPage extends StatefulWidget {
   const ChangePinPage({Key? key}) : super(key: key);
@@ -22,33 +25,45 @@ class _ChangePinPageState extends State<ChangePinPage> {
   TextEditingController _oldPinController = TextEditingController();
 
   bool isLoading = false;
+  late FToast fToast;
 
-    
-    handleSubmit()async {
-      String? pin = await sharedPreferences.getFromSharedPref('user-pin');
-      if(_oldPinController.text.isEmpty || _newPinController.text.isEmpty || _confirmPinController.text.isEmpty){
-        print("no");
-        setState(() {
-          isLoading=false;
-        });
-      }else if(_newPinController.text != _confirmPinController.text){
-        print("no");
-        setState(() {
-          isLoading=false;
-        });
-      }else if(_oldPinController.text!= pin ){
-        print("wrong");
-        setState(() {
-          isLoading=false;
-        });
-      }else{
-        await sharedPreferences.saveToSharedPref('user-pin', _newPinController.text);
-        setState(() {
-          isLoading=false;
-        });
-        Navigator.pop(context);
-      }
+  @override
+  void initState() {
+    super.initState();
+    fToast = FToast();
+  }
+
+
+  handleSubmit()async {
+    String? pin = await sharedPreferences.getFromSharedPref('user-pin');
+    if(_oldPinController.text.isEmpty || _newPinController.text.isEmpty || _confirmPinController.text.isEmpty){
+      fToast.init(context);
+      showToast(fToast, "Pin field cannot be empty", NotificationStatus.failure);
+      setState(() {
+        isLoading=false;
+      });
+    }else if(_newPinController.text != _confirmPinController.text){
+      fToast.init(context);
+      showToast(fToast, "New pin does not match confirm pin", NotificationStatus.failure);
+      setState(() {
+        isLoading=false;
+      });
+    }else if(_oldPinController.text!= pin ){
+      fToast.init(context);
+      showToast(fToast, "The current pin entered is incorrect", NotificationStatus.failure);
+      setState(() {
+        isLoading=false;
+      });
+    }else{
+      await sharedPreferences.saveToSharedPref('user-pin', _newPinController.text);
+      fToast.init(context);
+      showToast(fToast, "New pin successfully created", NotificationStatus.success);
+      setState(() {
+        isLoading=false;
+      });
+      Navigator.pop(context);
     }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +83,7 @@ class _ChangePinPageState extends State<ChangePinPage> {
           children: <Widget>[
               const PinTitle(
                 marginTop: 20,
-                title: 'Old Pin',        
+                title: 'Current Pin',        
               ),
               ChangePinFormFields(
                 controller: _oldPinController,  

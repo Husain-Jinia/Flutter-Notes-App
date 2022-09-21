@@ -1,11 +1,14 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:journaling_app/sharedPreferences.dart';
 import 'package:journaling_app/utils/emoji_list.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../utils/enums.dart';
 import '../../utils/numeric_check.dart';
+import '../Notifications/fToast_style.dart';
 
 class AddPage extends StatefulWidget {
   const AddPage({Key? key}) : super(key: key);
@@ -26,7 +29,8 @@ class _AddPageState extends State<AddPage> {
     "tags":"General",
     "date":null,
     "image": ""
-  };  
+  }; 
+  late FToast fToast; 
   bool isLoading = false;
   String icon = "128218";
   String emoticon = "129489";
@@ -45,6 +49,7 @@ class _AddPageState extends State<AddPage> {
     super.initState();
     getCategories();
     setProfileIcons(emoticon);
+    fToast = FToast();
   }
 
   getCategories()async {
@@ -67,6 +72,8 @@ class _AddPageState extends State<AddPage> {
       });
     }
     else if(addCategoryController.text.isEmpty){
+      fToast.init(context);
+      showToast(fToast, "Category cannot be empty", NotificationStatus.failure);
     }else{
       categories.add(addCategoryController.text);
       await sharedPreferences.saveToSharedPref('all-categories', jsonEncode(categories));
@@ -78,6 +85,8 @@ class _AddPageState extends State<AddPage> {
 
   handleSubmit()async{
     if (titleController.text.isEmpty) {
+      fToast.init(context);
+      showToast(fToast, "Title cannot be left empty", NotificationStatus.failure);
       setState(() {
         isLoading=false;
       });
@@ -94,12 +103,19 @@ class _AddPageState extends State<AddPage> {
       if(allJournals==null){
         journals.add(journal);
         await sharedPreferences.saveToSharedPref('user-journals',jsonEncode(journals));
+        fToast.init(context);
+        showToast(fToast, "Note created successfully. Please refresh to view your newly created note", NotificationStatus.success);
+        setState(() {
+          isLoading=false;
+        });
         // ignore: use_build_context_synchronously
         Navigator.of(context).pop();
       }else{
         List decoded = jsonDecode(allJournals);
         decoded.add(journal);
         await sharedPreferences.saveToSharedPref('user-journals',jsonEncode(decoded));
+        fToast.init(context);
+        showToast(fToast, "Note created successfully. Please refresh to view your newly created note", NotificationStatus.success);
         // ignore: use_build_context_synchronously
         Navigator.of(context).pop();
       }
@@ -393,7 +409,7 @@ class _AddPageState extends State<AddPage> {
                 children: [         
                   Container(
                     margin: EdgeInsets.only(left: 5),
-                    width:MediaQuery.of(context).size.width * 0.70 ,
+                    width:MediaQuery.of(context).size.width * 0.75 ,
                     child:InputDecorator(
                   decoration: InputDecoration(
                     border: InputBorder.none

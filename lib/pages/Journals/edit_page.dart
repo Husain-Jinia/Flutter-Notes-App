@@ -1,8 +1,12 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:journaling_app/sharedPreferences.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../utils/enums.dart';
+import '../Notifications/fToast_style.dart';
 
 class EditPage extends StatefulWidget {
 
@@ -33,6 +37,7 @@ class _EditPageState extends State<EditPage> {
   List categories = ["General", "Travel", "Study", "Todo", "Diary", ];
   List<dynamic> journals=[];
   int index=0;
+  late FToast fToast;
 
   @override
   void initState() {
@@ -41,6 +46,7 @@ class _EditPageState extends State<EditPage> {
     index = widget.index;
     getNotes();
     getCategories();
+    fToast = FToast();
   }
 
   getCategories()async {
@@ -70,6 +76,8 @@ class _EditPageState extends State<EditPage> {
 
   handleSubmit()async{
     if (titleController.text.isEmpty) {
+      fToast.init(context);
+      showToast(fToast, "Title cannot be empty", NotificationStatus.failure);
       setState(() {
         isLoading=false;
       });
@@ -85,6 +93,8 @@ class _EditPageState extends State<EditPage> {
         reversedList[index]["body"] = bodyController.text;
         reversedList[index]["tags"] = currentCategory;
         await sharedPreferences.saveToSharedPref('user-journals',jsonEncode(decodedJournals));
+        fToast.init(context);
+        showToast(fToast, "Note updated successfully. Refresh to see the updated note", NotificationStatus.success);
         Navigator.of(context).pop();
       }
     }

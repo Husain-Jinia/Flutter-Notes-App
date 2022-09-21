@@ -2,10 +2,13 @@ import 'dart:convert';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:journaling_app/pages/Journals/all_checklists.dart';
 import 'package:journaling_app/pages/Settings/settings.dart';
 import 'package:journaling_app/sharedPreferences.dart';
+import '../../utils/enums.dart';
 import '../../utils/numeric_check.dart';
+import '../Notifications/fToast_style.dart';
 import 'add_notes.dart';
 import 'edit_page.dart';
 
@@ -26,13 +29,15 @@ class _HomePageState extends State<HomePage> {
   List<dynamic> journals = [];
   late Widget profileIcon;
   late String? name = "";
+  late FToast fToast;
   String emoticon = "129489";
-
+ 
 
   @override
   void initState() {
     super.initState();
     setName();
+    fToast = FToast();
   }
   
   setName() async {
@@ -100,17 +105,23 @@ class _HomePageState extends State<HomePage> {
       List reversedList = List.from(taskDecoded.reversed);
       reversedList.removeAt(index);
       await sharedPreferences.saveToSharedPref('all-checklist', jsonEncode(reversedList));
+      fToast.init(context);
+      showToast(fToast, "Task added to the task list successfully ", NotificationStatus.success);
     }
   }
 
   submitCheckLists()async{
     if(addChecklistController.text.isEmpty){
+      fToast.init(context);
+      showToast(fToast, "Task cannot be empty", NotificationStatus.failure);
     }else{
       String? allChecklists  = await sharedPreferences.getFromSharedPref('all-checklist');
       if (allChecklists!=null) {
         List decodedChecklists = jsonDecode(allChecklists);
         decodedChecklists.add(addChecklistController.text);
         await sharedPreferences.saveToSharedPref('all-checklist', jsonEncode(decodedChecklists));
+        fToast.init(context);
+        showToast(fToast, "Task added to the task list successfully ", NotificationStatus.success);
         setState(() {
           
         });
@@ -118,7 +129,8 @@ class _HomePageState extends State<HomePage> {
         List checklist = [];
         checklist.add(addChecklistController.text);
         await sharedPreferences.saveToSharedPref('all-checklist', jsonEncode(checklist));
-        print(checklist);
+        fToast.init(context);
+        showToast(fToast, "Task added to the task list successfully ", NotificationStatus.success);
         setState(() {
           
         });

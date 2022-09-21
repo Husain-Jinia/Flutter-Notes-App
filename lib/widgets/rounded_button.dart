@@ -1,8 +1,11 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:journaling_app/pages/Journals/home.dart';
 import '../pages/Navigation/navigation.dart';
+import '../pages/Notifications/fToast_style.dart';
 import '../sharedPreferences.dart';
+import '../utils/enums.dart';
 
 class RoundedButton extends StatefulWidget {
   final String text;
@@ -27,6 +30,15 @@ class RoundedButton extends StatefulWidget {
 
 class _RoundedButtonState extends State<RoundedButton> {
     SharedPreferencesService sharedPreferences = SharedPreferencesService();
+    late FToast fToast;
+
+    @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    fToast = FToast();
+    
+  }
 
 
   handleSubmit(TextEditingController pin, TextEditingController name) async {
@@ -42,6 +54,8 @@ class _RoundedButtonState extends State<RoundedButton> {
         ),
       );
       }else{
+        fToast.init(context);
+        showToast(fToast, "Incorrect pin entered", NotificationStatus.failure);
       }
 
      } else {
@@ -56,6 +70,8 @@ class _RoundedButtonState extends State<RoundedButton> {
               ),
             );
        }else{
+        fToast.init(context);
+        showToast(fToast, "Pin field cannot be empty", NotificationStatus.failure);
        }
      }
      

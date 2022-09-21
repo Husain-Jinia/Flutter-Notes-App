@@ -1,8 +1,11 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import '../../sharedPreferences.dart';
+import '../../utils/enums.dart';
+import '../Notifications/fToast_style.dart';
 
 class AllChecklist extends StatefulWidget {
   const AllChecklist({Key? key}) : super(key: key);
@@ -17,6 +20,13 @@ class _AllChecklistState extends State<AllChecklist> {
    SharedPreferencesService sharedPreferences = SharedPreferencesService();
    List checklist = [];
    TextEditingController addChecklistController = TextEditingController();
+   late FToast fToast;
+
+    @override
+  void initState() {
+    super.initState();
+    fToast = FToast();
+  }
 
     setChecklists()async{
     String? allChecklist  = await sharedPreferences.getFromSharedPref('all-checklist');
@@ -43,12 +53,16 @@ class _AllChecklistState extends State<AllChecklist> {
 
     submitCheckLists()async{
     if(addChecklistController.text.isEmpty){
+      fToast.init(context);
+      showToast(fToast, "task cannot be empty", NotificationStatus.success);
     }else{
       String? allJournals  = await sharedPreferences.getFromSharedPref('all-checklist');
       if (allJournals!=null) {
         List decodedJournals = jsonDecode(allJournals);
         decodedJournals.add(addChecklistController.text);
         await sharedPreferences.saveToSharedPref('all-checklist', jsonEncode(decodedJournals));
+        fToast.init(context);
+        showToast(fToast, "Task added to task list successfully ", NotificationStatus.success);
         setState(() {
           
         });
@@ -56,6 +70,8 @@ class _AllChecklistState extends State<AllChecklist> {
         List checklist = [];
         checklist.add(addChecklistController.text);
         await sharedPreferences.saveToSharedPref('all-checklist', jsonEncode(checklist));
+        fToast.init(context);
+        showToast(fToast, "Task added to task list successfully ", NotificationStatus.success);
         setState(() {
           
         });
