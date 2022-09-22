@@ -1,4 +1,4 @@
-# journaling_app
+# JournaliT
 
 Journaling / Note taking app to help keep yourself organised and always up to date
 
