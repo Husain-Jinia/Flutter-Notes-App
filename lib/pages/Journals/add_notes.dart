@@ -40,7 +40,7 @@ class _AddPageState extends State<AddPage> {
         style: const TextStyle(fontSize: 45),
       ));
   String currentCategory = "General";
-  List categories = ["General", "Travel", "Study", "Todo", "Diary", "Notes"];
+  List categories = ["General"];
   List<dynamic> journals=[];
 
   @override

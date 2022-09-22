@@ -21,7 +21,7 @@ class _FolderPageState extends State<FolderPage> {
   SharedPreferencesService sharedPreferences = SharedPreferencesService();
   TextEditingController addCategoryController = TextEditingController();
 
-  List categories = ["General", "Travel", "Study", "Todo", "Diary", "Notes"];
+  List categories = ["General"];
   int length =0;
   late FToast fToast;
 
@@ -29,6 +29,7 @@ class _FolderPageState extends State<FolderPage> {
   void initState() {
     super.initState();
     getCategories();
+    fToast = FToast();
   }
 
   getCategories()async {
@@ -40,6 +41,17 @@ class _FolderPageState extends State<FolderPage> {
       setState(() {
         categories = setCategories;
       });
+    }
+  }
+
+   setCategories()async {
+    String? allCategories = await sharedPreferences.getFromSharedPref('all-categories');
+    if (allCategories == null) {
+      await sharedPreferences.saveToSharedPref('all-categories', jsonEncode(categories));
+      return categories;
+    } else {
+      List  setCategories = jsonDecode(allCategories);
+      return setCategories;
     }
   }
 
@@ -122,16 +134,175 @@ class _FolderPageState extends State<FolderPage> {
     );
   }
 
+  removeCategory(int index) async {
+    if(index==0){
+      fToast.init(context);
+      showToast(fToast, "Cannot delete this category", NotificationStatus.failure);
+    }
+    else{
+      String? allCategories = await sharedPreferences.getFromSharedPref('all-categories');
+      if(allCategories!=null){
+        List decodedList = jsonDecode(allCategories);
+        decodedList.removeAt(index);
+        await sharedPreferences.saveToSharedPref('all-categories', jsonEncode(decodedList));
+        fToast.init(context);
+        showToast(fToast, "Category successfully deleted", NotificationStatus.success);
+      } 
+    }
+  }
+
+  confirmDelete(int index){
+    return showDialog(
+              context: context,
+              builder: (BuildContext context){
+                  return Dialog(
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                    child: Container( 
+                    height: 150,
+                      padding: EdgeInsets.all(10),
+                      child: Column(
+                      children: [
+                        SizedBox(height: 20,),
+                        Text("Are you sure you want to delete this category : ${categories[index]}",textAlign: TextAlign.center, style: TextStyle(fontSize: 17),),
+                        SizedBox(height: 30,),
+                        GestureDetector(
+                          onTap: () {
+                            removeCategory(index);
+                            Navigator.pop(context);
+                            
+                          },
+                          child: Text("Confirm", style:TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+                        )
+                      ],
+                  )));
+              
+              });
+  }
+
+  deleteWidget(){
+    return showDialog(
+              context: context,
+              builder: (BuildContext context){
+                  return Dialog(
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                    child: Container(
+                      height: 400,
+                      padding: EdgeInsets.all(10),
+                      child:SingleChildScrollView(child: Column(
+                      children: [
+                        
+                FutureBuilder(
+            future: setCategories(),
+            builder:(context, AsyncSnapshot snapshot) {
+              if (snapshot.hasError) {
+                return const Center(child:Text('No categories to display'));
+              } else if (!snapshot.hasData) {
+                return const Center(
+                    child: Text("No categories to display"));
+              } else {
+                return 
+                  Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                      snapshot.data==null?
+                        const Center(child:Text("No categories to display"))
+                        :
+                      ListView.builder(
+                      padding: const EdgeInsets.only(top: 10),
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: snapshot.data.length,
+                      
+                      itemBuilder: (context, index) {
+                        return Container(
+                          margin: const EdgeInsets.only(bottom: 15, left: 15, right: 15),
+                          height: 50,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                              ),
+                          child: Card(
+                            elevation: 1,
+                            margin: EdgeInsets.zero,
+                            color:  Colors.grey[100],
+                            child: ListTile(
+                              // contentPadding: const EdgeInsets.only(left: 8, bottom: 4, top: 2, right: 4),
+                              title: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  const SizedBox(width: 10),
+                                    Expanded(
+                                      child:Text(snapshot.data[index],
+                                          maxLines:1,
+                                          style: const TextStyle(fontSize: 16,fontWeight: FontWeight.bold,color: Color.fromARGB(255, 43, 55, 69),
+                                      )),
+                                    )
+                                ],
+                              ),
+                              trailing: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(right: 15.0),
+                                    child: GestureDetector( 
+                                      onTap: () async {
+                                       confirmDelete(index);
+                                       setState(() { });
+                                      },
+                                      child: const Icon(
+                                      Icons.delete,
+                                      color: Color.fromARGB(137, 105, 105, 105),
+                                      size: 20,
+                                    )
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          )
+                        );
+                      },)
+
+                      ],
+                    );}})
+                    ]))));
+              }
+            );
+  }
+
   @override
   Widget build(BuildContext context) {
    return Scaffold(
       backgroundColor: Color.fromARGB(255, 219, 210, 127),
       appBar: AppBar(
-        title: const Text("Categories", style: TextStyle(color: Color.fromARGB(255, 93, 22, 22), fontWeight: FontWeight.bold)),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children:[
+            Text("Categories", style: TextStyle(color: Color.fromARGB(255, 93, 22, 22), fontWeight: FontWeight.bold)),
+              GestureDetector(
+              onTap: () {
+                deleteWidget();
+              },
+              child:Icon(Icons.delete, color: Colors.black54,)
+            )
+            ],),
         backgroundColor: Colors.amber,
       ),
-      body:
-        SingleChildScrollView(
+      // body:Column(
+      //   mainAxisAlignment: MainAxisAlignment.start,
+      //   crossAxisAlignment: CrossAxisAlignment.start,
+      //   children:[
+      //   Padding(padding: EdgeInsets.only(top: 20)),
+      //   GestureDetector(
+      //     onTap:(){ setState(() {});},
+      //     child: Row(children: [
+      //       SizedBox(width: 15),
+      //       Text("Refresh", style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold,color:Color.fromARGB(255, 86, 127, 160)),),
+      //       SizedBox(width: 3,),
+      //       Icon(Icons.refresh, size: 17,color:Color.fromARGB(255, 86, 127, 160))
+      //     ]),
+      //   ),
+        body:SingleChildScrollView(
         child:Wrap(
           direction: Axis.horizontal,
           children: List.generate(categories.length, (index){

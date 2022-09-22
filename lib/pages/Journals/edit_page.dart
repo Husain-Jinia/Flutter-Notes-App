@@ -34,7 +34,7 @@ class _EditPageState extends State<EditPage> {
   };  
   bool isLoading = false;
   String currentCategory = "General";
-  List categories = ["General", "Travel", "Study", "Todo", "Diary", ];
+  List categories = ["General"];
   List<dynamic> journals=[];
   int index=0;
   late FToast fToast;
