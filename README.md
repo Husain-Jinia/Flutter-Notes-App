@@ -1,6 +1,8 @@
 # journaling_app
 
-A new Flutter project.
+Journaling / Note taking app to help keep yourself organised and always up to date
+
+![notes_app_ss](https://user-images.githubusercontent.com/75819874/191720197-6466d858-ca2b-426e-9caa-a296d70ac113.png)
 
 ## Getting Started
 
