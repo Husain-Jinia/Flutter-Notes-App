@@ -2,7 +2,8 @@
 
 Journaling / Note taking app to help keep yourself organised and always up to date
 
-![notes_app_ss](https://user-images.githubusercontent.com/75819874/191720197-6466d858-ca2b-426e-9caa-a296d70ac113.png)
+![notes_app_ss](https://user-images.githubusercontent.com/75819874/191720778-da2ee56e-33b8-4977-bbfc-8ec027be0d64.png)
+
 
 ## Getting Started
 
