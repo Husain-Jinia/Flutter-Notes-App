@@ -573,9 +573,11 @@ class _HomePageState extends State<HomePage> {
       floatingActionButton: FloatingActionButton.extended(
         backgroundColor: Color.fromARGB(255, 191, 153, 14),
         onPressed: (){
-          Navigator.push(
+          Navigator.pushReplacement<void, void>(
             context,
-            MaterialPageRoute(builder: (context) => const AddPage()),
+            MaterialPageRoute<void>(
+              builder: (BuildContext context) => const AddPage(),
+            ),
           );
           setState(() {});
         },
