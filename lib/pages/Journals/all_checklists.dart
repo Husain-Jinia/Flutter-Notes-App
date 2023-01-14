@@ -17,16 +17,21 @@ class AllChecklist extends StatefulWidget {
 
 class _AllChecklistState extends State<AllChecklist> {
 
-   SharedPreferencesService sharedPreferences = SharedPreferencesService();
-   List checklist = [];
-   TextEditingController addChecklistController = TextEditingController();
-   late FToast fToast;
+    SharedPreferencesService sharedPreferences = SharedPreferencesService();
+    List<dynamic> checklist = [];
+    TextEditingController addChecklistController = TextEditingController();
+    late FToast fToast;
+    Map<String, dynamic> checklist_map = {
+      "task":"",
+      "status":false
+    };
+
 
     @override
-  void initState() {
-    super.initState();
-    fToast = FToast();
-  }
+    void initState() {
+      super.initState();
+      fToast = FToast();
+    }
 
     setChecklists()async{
     String? allChecklist  = await sharedPreferences.getFromSharedPref('all-checklist');
@@ -52,6 +57,7 @@ class _AllChecklistState extends State<AllChecklist> {
   }
 
     submitCheckLists()async{
+    checklist_map["task"] = addChecklistController.text;
     if(addChecklistController.text.isEmpty){
       fToast.init(context);
       showToast(fToast, "task cannot be empty", NotificationStatus.success);
@@ -59,21 +65,21 @@ class _AllChecklistState extends State<AllChecklist> {
       String? allJournals  = await sharedPreferences.getFromSharedPref('all-checklist');
       if (allJournals!=null) {
         List decodedJournals = jsonDecode(allJournals);
-        decodedJournals.add(addChecklistController.text);
+        decodedJournals.add(checklist_map);
         await sharedPreferences.saveToSharedPref('all-checklist', jsonEncode(decodedJournals));
         fToast.init(context);
         showToast(fToast, "Task added to task list successfully ", NotificationStatus.success);
         setState(() {
-          
+          addChecklistController.text = "";
         });
       }else{
         List checklist = [];
-        checklist.add(addChecklistController.text);
+        checklist.add(checklist_map);
         await sharedPreferences.saveToSharedPref('all-checklist', jsonEncode(checklist));
         fToast.init(context);
         showToast(fToast, "Task added to task list successfully ", NotificationStatus.success);
         setState(() {
-          
+          addChecklistController.text = "";
         });
       }
     }
@@ -221,13 +227,22 @@ class _AllChecklistState extends State<AllChecklist> {
                               title: Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  const SizedBox(width: 10),
+                                  Checkbox(
+                                    value: snapshot.data[index]["status"], 
+                                    onChanged: (val) async {
+                                        val = val==false?true:false;
+                                        snapshot.data[index]["status"] = val==false?true:false;
+                                        List reversedTaskList = List.from(snapshot.data.reversed);
+                                        await sharedPreferences.saveToSharedPref('all-checklist', jsonEncode(reversedTaskList));
+                                        setState(() {
+                                        });
+                                    }),
                                     Expanded(
-                                      child:Text(snapshot.data[index],
+                                      child:Text(snapshot.data[index]["task"],
                                           maxLines:1,
-                                          style: const TextStyle(fontSize: 16,fontWeight: FontWeight.bold,color: Color.fromARGB(255, 43, 55, 69),
-                                      )),
-                                    )
+                                          style: snapshot.data[index]["status"]==true? TextStyle(decoration: TextDecoration.lineThrough,fontSize: 16,fontWeight: FontWeight.bold,color: Color.fromARGB(255, 43, 55, 69),
+                                      ):TextStyle(fontSize: 16,fontWeight: FontWeight.bold,color: Color.fromARGB(255, 43, 55, 69))),
+                                    ),
                                 ],
                               ),
                               trailing: Column(

@@ -15,8 +15,6 @@ class FolderPage extends StatefulWidget {
   State<FolderPage> createState() => _FolderPageState();
 }
 
-
-
 class _FolderPageState extends State<FolderPage> {
   SharedPreferencesService sharedPreferences = SharedPreferencesService();
   TextEditingController addCategoryController = TextEditingController();
@@ -37,7 +35,7 @@ class _FolderPageState extends State<FolderPage> {
     if (allCategories == null) {
       await sharedPreferences.saveToSharedPref('all-categories', jsonEncode(categories));
     } else {
-      List  setCategories = jsonDecode(allCategories);
+      List setCategories = jsonDecode(allCategories);
       setState(() {
         categories = setCategories;
       });
@@ -153,30 +151,31 @@ class _FolderPageState extends State<FolderPage> {
 
   confirmDelete(int index){
     return showDialog(
-              context: context,
-              builder: (BuildContext context){
-                  return Dialog(
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-                    child: Container( 
-                    height: 150,
-                      padding: EdgeInsets.all(10),
-                      child: Column(
-                      children: [
-                        SizedBox(height: 20,),
-                        Text("Are you sure you want to delete this category : ${categories[index]}",textAlign: TextAlign.center, style: TextStyle(fontSize: 17),),
-                        SizedBox(height: 30,),
-                        GestureDetector(
-                          onTap: () {
-                            removeCategory(index);
-                            Navigator.pop(context);
-                            
-                          },
-                          child: Text("Confirm", style:TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
-                        )
-                      ],
-                  )));
-              
-              });
+      context: context,
+      builder: (BuildContext context){
+          return Dialog(
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+            child: Container( 
+            height: 150,
+              padding: EdgeInsets.all(10),
+              child: Column(
+              children: [
+                SizedBox(height: 20,),
+                Text("Are you sure you want to delete this category : ${categories[index]}",textAlign: TextAlign.center, style: TextStyle(fontSize: 17),),
+                SizedBox(height: 30,),
+                GestureDetector(
+                  onTap: () {
+                    removeCategory(index);
+                    Navigator.pop(context);                  
+                  },
+                  child: Text("Confirm", style:TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+                )
+              ],
+            )
+          )
+        );      
+      }
+    );
   }
 
   deleteWidget(){
@@ -261,14 +260,22 @@ class _FolderPageState extends State<FolderPage> {
                             ),
                           )
                         );
-                      },)
+                      },
+                      )
 
                       ],
-                    );}})
-                    ]))));
-              }
-            );
+                    );
+                  }
+                }
+              )
+            ]
+          )
+        )
+      )
+    );
   }
+  );
+}
 
   @override
   Widget build(BuildContext context) {
@@ -288,20 +295,6 @@ class _FolderPageState extends State<FolderPage> {
             ],),
         backgroundColor: Colors.amber,
       ),
-      // body:Column(
-      //   mainAxisAlignment: MainAxisAlignment.start,
-      //   crossAxisAlignment: CrossAxisAlignment.start,
-      //   children:[
-      //   Padding(padding: EdgeInsets.only(top: 20)),
-      //   GestureDetector(
-      //     onTap:(){ setState(() {});},
-      //     child: Row(children: [
-      //       SizedBox(width: 15),
-      //       Text("Refresh", style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold,color:Color.fromARGB(255, 86, 127, 160)),),
-      //       SizedBox(width: 3,),
-      //       Icon(Icons.refresh, size: 17,color:Color.fromARGB(255, 86, 127, 160))
-      //     ]),
-      //   ),
         body:SingleChildScrollView(
         child:Wrap(
           direction: Axis.horizontal,
