@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:journaling_app/pages/Journals/home.dart';
+import 'package:journaling_app/pages/Navigation/navigation.dart';
 import 'package:journaling_app/sharedPreferences.dart';
 import 'package:journaling_app/utils/emoji_list.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -110,10 +111,11 @@ class _AddPageState extends State<AddPage> {
           isLoading=false;
         });
         // ignore: use_build_context_synchronously
+        Navigator.pop(context);
         Navigator.pushReplacement<void, void>(
                     context,
                     MaterialPageRoute<void>(
-                      builder: (BuildContext context) => const HomePage(),
+                      builder: (BuildContext context) => Navigation(),
                     ),
                   );
       }else{
@@ -123,12 +125,13 @@ class _AddPageState extends State<AddPage> {
         fToast.init(context);
         showToast(fToast, "Note created successfully. Please refresh to view your newly created note", NotificationStatus.success);
         // ignore: use_build_context_synchronously
+        Navigator.pop(context);
         Navigator.pushReplacement<void, void>(
-                    context,
-                    MaterialPageRoute<void>(
-                      builder: (BuildContext context) => const HomePage(),
-                    ),
-                  );
+          context,
+          MaterialPageRoute<void>(
+            builder: (BuildContext context) => Navigation(),
+          ),
+        );
       }
     }
   }

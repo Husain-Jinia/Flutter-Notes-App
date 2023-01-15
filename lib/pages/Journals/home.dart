@@ -163,10 +163,18 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+  navigateHome() async {
+    // Navigator.pushReplacement<void, void>(
+    //       context,
+    //       MaterialPageRoute<void>(
+    //         builder: (BuildContext context) =>  SettingsPage(),
+    //       ),
+    //     );
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return WillPopScope(onWillPop: () =>navigateHome(),child: Scaffold(
       backgroundColor: Color.fromARGB(255, 219, 210, 127),
       appBar: AppBar(
         flexibleSpace: Container(
@@ -180,7 +188,7 @@ class _HomePageState extends State<HomePage> {
         children:[
         Row(
           children: [
-          Image.asset('assets/images/logo-journalit-2.png', width: 55,height: 55,),
+          Image.asset('assets/images/logo_jit.png', width: 55,height: 55,),
           const SizedBox(width: 10,),
           Text("Welcome, $name",
           overflow: TextOverflow.ellipsis,
@@ -190,11 +198,12 @@ class _HomePageState extends State<HomePage> {
             color: Color.fromARGB(255, 52, 63, 71)))]),
         GestureDetector(child: const Icon(Icons.settings,size: 30,color:Color.fromARGB(131, 0, 0, 0),),
         onTap:(){
-          Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => 
-                SettingsPage()),
-              );
+          Navigator.pushReplacement<void, void>(
+          context,
+          MaterialPageRoute<void>(
+            builder: (BuildContext context) =>  SettingsPage(),
+          ),
+        );
         },)]),
         backgroundColor: Color.fromARGB(255, 219, 210, 127),
         elevation: 0,
@@ -573,16 +582,14 @@ class _HomePageState extends State<HomePage> {
       floatingActionButton: FloatingActionButton.extended(
         backgroundColor: Color.fromARGB(255, 191, 153, 14),
         onPressed: (){
-          Navigator.pushReplacement<void, void>(
+          Navigator.push(
             context,
-            MaterialPageRoute<void>(
-              builder: (BuildContext context) => const AddPage(),
-            ),
+            MaterialPageRoute(builder: (context) => const AddPage()),
           );
           setState(() {});
         },
           label:Row(children: const [Icon(Icons.add),SizedBox(width: 5,),Text("Create Note",style: TextStyle(color: Color.fromARGB(255, 255, 255, 255)),)],)
       ),
-    );
+    ));
   }
 }
